@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import { Icon } from "leaflet";
@@ -314,7 +314,9 @@ export const JobPostingForm = () => {
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-              <LocationMarker position={position} setPosition={setPosition} />
+              <Fragment>
+                <LocationMarker position={position} setPosition={setPosition} />
+              </Fragment>
             </MapContainer>
           </div>
 

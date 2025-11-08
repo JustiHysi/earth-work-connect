@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, Fragment } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import { Icon } from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -95,26 +95,28 @@ export const InteractiveMap = () => {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          {jobs.map((job) => (
-            <Marker
-              key={job.id}
-              position={[job.latitude, job.longitude]}
-              icon={customIcon}
-              eventHandlers={{ click: () => setSelectedJob(job) }}>
-              <Popup>
-                <div className="p-2">
-                  <h3 className="font-semibold text-sm mb-1">{job.title}</h3>
-                  <p className="text-xs text-muted-foreground mb-2">{job.location_name}</p>
-                  <div className="flex items-center gap-2 text-xs">
-                    <span className="font-semibold text-success">${job.pay_per_day}/day</span>
-                    <span>•</span>
-                    <span>{job.duration_days} days</span>
+          <Fragment>
+            {jobs.map((job) => (
+              <Marker
+                key={job.id}
+                position={[job.latitude, job.longitude]}
+                icon={customIcon}
+                eventHandlers={{ click: () => setSelectedJob(job) }}>
+                <Popup>
+                  <div className="p-2">
+                    <h3 className="font-semibold text-sm mb-1">{job.title}</h3>
+                    <p className="text-xs text-muted-foreground mb-2">{job.location_name}</p>
+                    <div className="flex items-center gap-2 text-xs">
+                      <span className="font-semibold text-success">${job.pay_per_day}/day</span>
+                      <span>•</span>
+                      <span>{job.duration_days} days</span>
+                    </div>
                   </div>
-                </div>
-              </Popup>
-            </Marker>
-          ))}
-          {selectedJob && <RecenterMap lat={selectedJob.latitude} lng={selectedJob.longitude} />}
+                </Popup>
+              </Marker>
+            ))}
+            {selectedJob && <RecenterMap lat={selectedJob.latitude} lng={selectedJob.longitude} />}
+          </Fragment>
         </MapContainer>
       </div>
 
