@@ -104,11 +104,30 @@ export function RoleChangeDialog({
 
         <RadioGroup value={selectedRole} onValueChange={setSelectedRole} className="space-y-4">
           {roleOptions.map((option) => (
-            <div key={option.value} className="flex items-start space-x-3 border rounded-lg p-4 hover:bg-accent transition-colors">
-              <RadioGroupItem value={option.value} id={option.value} disabled={!canChangeRole()} />
+            <div 
+              key={option.value} 
+              className={`flex items-start space-x-3 border rounded-lg p-4 transition-colors cursor-pointer ${
+                canChangeRole() ? 'hover:bg-accent' : 'opacity-50 cursor-not-allowed'
+              } ${selectedRole === option.value ? 'border-primary bg-primary/5' : ''}`}
+              onClick={() => canChangeRole() && setSelectedRole(option.value)}
+            >
+              <RadioGroupItem 
+                value={option.value} 
+                id={option.value} 
+                disabled={false}
+                className="mt-1"
+              />
               <div className="flex-1">
-                <Label htmlFor={option.value} className="font-semibold cursor-pointer">
+                <Label 
+                  htmlFor={option.value} 
+                  className={`font-semibold ${canChangeRole() ? 'cursor-pointer' : 'cursor-not-allowed'}`}
+                >
                   {option.label}
+                  {option.value === currentRole && (
+                    <span className="ml-2 text-xs bg-primary/20 text-primary px-2 py-0.5 rounded-full">
+                      Current
+                    </span>
+                  )}
                 </Label>
                 <p className="text-sm text-muted-foreground">{option.description}</p>
               </div>
