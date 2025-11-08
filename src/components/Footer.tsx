@@ -23,10 +23,38 @@ export const Footer = () => {
           <div>
             <h4 className="font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2 text-muted-foreground">
-              <li><a href="#jobs" className="hover:text-primary transition-colors">{t('nav.browseJobs')}</a></li>
-              <li><a href="#impact" className="hover:text-primary transition-colors">{t('nav.ourImpact')}</a></li>
-              <li><button onClick={() => navigate("/about")} className="hover:text-primary transition-colors">{t('footer.about')}</button></li>
-              <li><button onClick={() => navigate("/contact")} className="hover:text-primary transition-colors">{t('footer.contact')}</button></li>
+              <li>
+                <button 
+                  onClick={() => navigate("/jobs")} 
+                  className="hover:text-primary transition-colors cursor-pointer text-left"
+                >
+                  {t('nav.browseJobs')}
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => navigate("/impact")} 
+                  className="hover:text-primary transition-colors cursor-pointer text-left"
+                >
+                  {t('nav.ourImpact')}
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => navigate("/about")} 
+                  className="hover:text-primary transition-colors cursor-pointer text-left"
+                >
+                  {t('footer.about')}
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => navigate("/contact")} 
+                  className="hover:text-primary transition-colors cursor-pointer text-left"
+                >
+                  {t('footer.contact')}
+                </button>
+              </li>
             </ul>
           </div>
           
