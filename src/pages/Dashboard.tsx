@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { TreePine, Droplets, Briefcase, DollarSign, LogOut } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 interface Profile {
   id: string;
@@ -22,6 +23,7 @@ interface ImpactStats {
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [stats, setStats] = useState<ImpactStats | null>(null);
@@ -85,14 +87,14 @@ export default function Dashboard() {
     <div className="min-h-screen bg-background">
       <header className="border-b border-border bg-background/95 backdrop-blur">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <h1 className="text-2xl font-bold">Dashboard</h1>
+          <h1 className="text-2xl font-bold">{t("dashboard.title")}</h1>
           <div className="flex items-center gap-4">
             <span className="text-sm text-muted-foreground">
               {profile?.full_name || profile?.email}
             </span>
             <Button variant="outline" size="sm" onClick={handleSignOut}>
               <LogOut className="h-4 w-4 mr-2" />
-              Sign Out
+              {t("dashboard.signOut")}
             </Button>
           </div>
         </div>
@@ -101,55 +103,55 @@ export default function Dashboard() {
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-foreground mb-2">
-            Welcome back, {profile?.full_name?.split(' ')[0]}!
+            {t("dashboard.welcome")}, {profile?.full_name?.split(" ")[0]}!
           </h2>
           <p className="text-muted-foreground">
-            You're registered as a <span className="font-semibold text-primary capitalize">{profile?.role}</span>
+            {t("dashboard.registeredAs")} <span className="font-semibold text-primary capitalize">{profile?.role}</span>
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Trees Planted</CardTitle>
+              <CardTitle className="text-sm font-medium">{t("impact.treesPlanted")}</CardTitle>
               <TreePine className="h-4 w-4 text-primary" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stats?.trees_planted || 0}</div>
-              <p className="text-xs text-muted-foreground">Growing our future</p>
+              <p className="text-xs text-muted-foreground">{t("dashboard.growingFuture")}</p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">CO₂ Offset</CardTitle>
+              <CardTitle className="text-sm font-medium">{t("impact.co2Offset")}</CardTitle>
               <Droplets className="h-4 w-4 text-secondary" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stats?.co2_offset_kg || 0} kg</div>
-              <p className="text-xs text-muted-foreground">Carbon reduced</p>
+              <p className="text-xs text-muted-foreground">{t("dashboard.carbonReduced")}</p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Jobs Completed</CardTitle>
+              <CardTitle className="text-sm font-medium">{t("impact.jobsCompleted")}</CardTitle>
               <Briefcase className="h-4 w-4 text-accent" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stats?.jobs_completed || 0}</div>
-              <p className="text-xs text-muted-foreground">Tasks finished</p>
+              <p className="text-xs text-muted-foreground">{t("dashboard.tasksFinished")}</p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">Total Earnings</CardTitle>
+              <CardTitle className="text-sm font-medium">{t("dashboard.totalEarnings")}</CardTitle>
               <DollarSign className="h-4 w-4 text-success" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">${stats?.earnings_usd || 0}</div>
-              <p className="text-xs text-muted-foreground">Income generated</p>
+              <p className="text-xs text-muted-foreground">{t("dashboard.incomeGenerated")}</p>
             </CardContent>
           </Card>
         </div>
@@ -157,18 +159,18 @@ export default function Dashboard() {
         <div className="grid gap-6">
           <Card>
             <CardHeader>
-              <CardTitle>Quick Actions</CardTitle>
+              <CardTitle>{t("dashboard.quickActions")}</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-wrap gap-4">
-              <Button onClick={() => navigate("/")}>
-                Browse Jobs
+              <Button onClick={() => navigate("/jobs")}>
+                {t("dashboard.browseJobs")}
               </Button>
-              <Button variant="outline" onClick={() => navigate("/")}>
-                View Map
+              <Button variant="outline" onClick={() => navigate("/map")}>
+                {t("dashboard.viewMap")}
               </Button>
-              {profile?.role === 'ngo' && (
-                <Button variant="secondary">
-                  Post New Job
+              {profile?.role === "ngo" && (
+                <Button variant="secondary" onClick={() => navigate("/post-job")}>
+                  {t("dashboard.postJob")}
                 </Button>
               )}
             </CardContent>

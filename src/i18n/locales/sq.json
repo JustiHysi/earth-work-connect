@@ -40,7 +40,22 @@
     "treesPlanted": "Pemë të Mbjella",
     "co2Offset": "CO₂ e Kompensuar (ton)",
     "activeWorkers": "Punëtorë Aktivë",
-    "jobsCompleted": "Punë të Përfunduara"
+    "jobsCompleted": "Punë të Përfunduara",
+    "pageDescription": "Gjurmimi i ndryshimit real mjedisor përmes mikro-punëve të verifikuara. Çdo pemë e mbjellë, çdo panel diellor i mirëmbajtur dhe çdo komunitet i fuqizuar krijon ndikim të qëndrueshëm.",
+    "reforestation": "Rigjelbërim",
+    "reforestationDesc": "Komuniteti ynë ka mbjellë mbi 15,000 pemë në rajonet e cenueshme, duke ndihmuar për të restauruar ekosistemet dhe luftuar ndryshimin klimatik një fidanë në një kohë.",
+    "carbonOffset": "Kompensimi i Karbonit",
+    "carbonOffsetDesc": "Përmes mirëmbajtjes së energjisë së pastër dhe iniciativave të reduktimit të mbeturinave, kemi kompensuar mbi 850 ton emetimeve të CO₂ në vit.",
+    "communityEmpowerment": "Fuqizimi i Komunitetit",
+    "communityEmpowermentDesc": "Mbi 3,200 punëtorë kanë fituar të ardhura të qëndrueshme duke ndërtuar rezistencë klimatike në komunitetet e tyre.",
+    "globalReach": "Shtrirje Globale",
+    "globalReachDesc": "Work4Earth operon në 15+ vende, duke lidhur OJQ-të me punëtorët lokalë për të krijuar ndikim mjedisor dhe ekonomik.",
+    "sdgAlignment": "Përputhja me OKQ",
+    "sdgAlignmentDesc": "Puna jonë mbështet drejtpërdrejt Objektivin e Zhvillimit të Qëndrueshëm 10 të OKB-së (Reduktimi i Pabarazive) duke ofruar akses të barabartë në punë të denjë.",
+    "growingImpact": "Ndikim në Rritje",
+    "growingImpactDesc": "Me mbi 12,500 punë të përfunduara dhe në rritje, platforma jonë vazhdon të zgjerojë veprimin mjedisor në mbarë botën.",
+    "closingTitle": "Duke kthyer vetëdijen në veprim, dhe të dhënat në dinjitet",
+    "closingDesc": "Çdo numër përfaqëson një person që fiton të ardhura, një pemë që rritet, ose një komunitet që bëhet më rezistent. Bashkohuni me ne për të krijuar ndikim të matshëm mjedisor dhe shoqëror."
   },
   "dashboard": {
     "title": "Paneli",
@@ -50,7 +65,12 @@
     "browseJobs": "Shfletoni Punët",
     "viewMap": "Shihni Hartën",
     "postJob": "Postoni Punë të Re",
-    "signOut": "Dilni"
+    "signOut": "Dilni",
+    "growingFuture": "Duke rritur të ardhmen tonë",
+    "carbonReduced": "Karboni i reduktuar",
+    "tasksFinished": "Detyra të përfunduara",
+    "totalEarnings": "Të Ardhurat Totale",
+    "incomeGenerated": "Të ardhura të gjeneruara"
   },
   "auth": {
     "title": "Puno<span>4</span>Tokë",
@@ -124,7 +144,8 @@
     "joinMovement": "Bashkohuni me Lëvizjen",
     "newsletter": "Regjistrohuni në buletinin tonë për përditësime",
     "emailPlaceholder": "Vendosni email-in tuaj",
-    "subscribe": "Regjistrohuni"
+    "subscribe": "Regjistrohuni",
+    "subscribeSuccess": "Faleminderit që u regjistruat! 🌍"
   },
   "contact": {
     "title": "Na Kontaktoni",
@@ -136,7 +157,9 @@
     "sending": "Duke dërguar...",
     "address": "Adresa",
     "phone": "Telefoni",
-    "emailLabel": "Email"
+    "emailLabel": "Email",
+    "sendMessage": "Dërgoni një mesazh",
+    "messageSent": "Mesazhi u dërgua! Do t'ju kontaktojmë së shpejti. 📧"
   },
   "terms": {
     "title": "Kushtet e Shërbimit",

@@ -40,7 +40,22 @@
     "treesPlanted": "Trees Planted",
     "co2Offset": "CO₂ Offset (tons)",
     "activeWorkers": "Active Workers",
-    "jobsCompleted": "Jobs Completed"
+    "jobsCompleted": "Jobs Completed",
+    "pageDescription": "Tracking real environmental change through verified micro-jobs. Every tree planted, every solar panel maintained, and every community empowered creates lasting impact.",
+    "reforestation": "Reforestation",
+    "reforestationDesc": "Our community has planted over 15,000 trees across vulnerable regions, helping to restore ecosystems and combat climate change one sapling at a time.",
+    "carbonOffset": "Carbon Offset",
+    "carbonOffsetDesc": "Through clean energy maintenance and waste reduction initiatives, we've offset over 850 tons of CO₂ emissions annually.",
+    "communityEmpowerment": "Community Empowerment",
+    "communityEmpowermentDesc": "Over 3,200 workers have earned sustainable income while building climate resilience in their communities.",
+    "globalReach": "Global Reach",
+    "globalReachDesc": "Work4Earth operates in 15+ countries, connecting NGOs with local workers to create environmental and economic impact.",
+    "sdgAlignment": "SDG Alignment",
+    "sdgAlignmentDesc": "Our work directly supports UN Sustainable Development Goal 10 (Reduced Inequalities) by providing equal access to dignified work.",
+    "growingImpact": "Growing Impact",
+    "growingImpactDesc": "With 12,500+ jobs completed and counting, our platform continues to scale environmental action across the globe.",
+    "closingTitle": "Turning awareness into action, and data into dignity",
+    "closingDesc": "Every number represents a person earning income, a tree growing, or a community becoming more resilient. Join us in creating measurable environmental and social impact."
   },
   "dashboard": {
     "title": "Dashboard",
@@ -50,7 +65,12 @@
     "browseJobs": "Browse Jobs",
     "viewMap": "View Map",
     "postJob": "Post New Job",
-    "signOut": "Sign Out"
+    "signOut": "Sign Out",
+    "growingFuture": "Growing our future",
+    "carbonReduced": "Carbon reduced",
+    "tasksFinished": "Tasks finished",
+    "totalEarnings": "Total Earnings",
+    "incomeGenerated": "Income generated"
   },
   "auth": {
     "title": "Work<span>4</span>Earth",
@@ -124,7 +144,8 @@
     "joinMovement": "Join the Movement",
     "newsletter": "Subscribe to our newsletter for updates",
     "emailPlaceholder": "Enter your email",
-    "subscribe": "Subscribe"
+    "subscribe": "Subscribe",
+    "subscribeSuccess": "Thank you for subscribing! 🌍"
   },
   "contact": {
     "title": "Contact Us",
@@ -136,7 +157,9 @@
     "sending": "Sending...",
     "address": "Address",
     "phone": "Phone",
-    "emailLabel": "Email"
+    "emailLabel": "Email",
+    "sendMessage": "Send us a message",
+    "messageSent": "Message sent! We'll get back to you soon. 📧"
   },
   "terms": {
     "title": "Terms of Service",

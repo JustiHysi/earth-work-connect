@@ -14,10 +14,9 @@ const Impact = () => {
       
       <main className="container mx-auto px-4 py-12">
         <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold text-foreground mb-4">Our Global Impact</h1>
+          <h1 className="text-5xl font-bold text-foreground mb-4">{t("impact.title")}</h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Tracking real environmental change through verified micro-jobs. Every tree planted, 
-            every solar panel maintained, and every community empowered creates lasting impact.
+            {t("impact.pageDescription")}
           </p>
         </div>
 
@@ -28,13 +27,12 @@ const Impact = () => {
             <CardHeader>
               <div className="flex items-center gap-2">
                 <TreePine className="h-6 w-6 text-primary" />
-                <CardTitle>Reforestation</CardTitle>
+                <CardTitle>{t("impact.reforestation")}</CardTitle>
               </div>
             </CardHeader>
             <CardContent>
               <CardDescription>
-                Our community has planted over 15,000 trees across vulnerable regions, 
-                helping to restore ecosystems and combat climate change one sapling at a time.
+                {t("impact.reforestationDesc")}
               </CardDescription>
             </CardContent>
           </Card>
@@ -43,13 +41,12 @@ const Impact = () => {
             <CardHeader>
               <div className="flex items-center gap-2">
                 <Droplets className="h-6 w-6 text-primary" />
-                <CardTitle>Carbon Offset</CardTitle>
+                <CardTitle>{t("impact.carbonOffset")}</CardTitle>
               </div>
             </CardHeader>
             <CardContent>
               <CardDescription>
-                Through clean energy maintenance and waste reduction initiatives, 
-                we've offset over 850 tons of CO₂ emissions annually.
+                {t("impact.carbonOffsetDesc")}
               </CardDescription>
             </CardContent>
           </Card>
@@ -58,13 +55,12 @@ const Impact = () => {
             <CardHeader>
               <div className="flex items-center gap-2">
                 <Users className="h-6 w-6 text-primary" />
-                <CardTitle>Community Empowerment</CardTitle>
+                <CardTitle>{t("impact.communityEmpowerment")}</CardTitle>
               </div>
             </CardHeader>
             <CardContent>
               <CardDescription>
-                Over 3,200 workers have earned sustainable income while building 
-                climate resilience in their communities.
+                {t("impact.communityEmpowermentDesc")}
               </CardDescription>
             </CardContent>
           </Card>
@@ -73,13 +69,12 @@ const Impact = () => {
             <CardHeader>
               <div className="flex items-center gap-2">
                 <Globe className="h-6 w-6 text-primary" />
-                <CardTitle>Global Reach</CardTitle>
+                <CardTitle>{t("impact.globalReach")}</CardTitle>
               </div>
             </CardHeader>
             <CardContent>
               <CardDescription>
-                Work4Earth operates in 15+ countries, connecting NGOs with local 
-                workers to create environmental and economic impact.
+                {t("impact.globalReachDesc")}
               </CardDescription>
             </CardContent>
           </Card>
@@ -88,13 +83,12 @@ const Impact = () => {
             <CardHeader>
               <div className="flex items-center gap-2">
                 <Target className="h-6 w-6 text-primary" />
-                <CardTitle>SDG Alignment</CardTitle>
+                <CardTitle>{t("impact.sdgAlignment")}</CardTitle>
               </div>
             </CardHeader>
             <CardContent>
               <CardDescription>
-                Our work directly supports UN Sustainable Development Goal 10 
-                (Reduced Inequalities) by providing equal access to dignified work.
+                {t("impact.sdgAlignmentDesc")}
               </CardDescription>
             </CardContent>
           </Card>
@@ -103,13 +97,12 @@ const Impact = () => {
             <CardHeader>
               <div className="flex items-center gap-2">
                 <TrendingUp className="h-6 w-6 text-primary" />
-                <CardTitle>Growing Impact</CardTitle>
+                <CardTitle>{t("impact.growingImpact")}</CardTitle>
               </div>
             </CardHeader>
             <CardContent>
               <CardDescription>
-                With 12,500+ jobs completed and counting, our platform continues 
-                to scale environmental action across the globe.
+                {t("impact.growingImpactDesc")}
               </CardDescription>
             </CardContent>
           </Card>
@@ -117,11 +110,10 @@ const Impact = () => {
 
         <div className="mt-16 bg-muted/50 rounded-lg p-8">
           <h2 className="text-3xl font-bold text-foreground mb-4 text-center">
-            Turning awareness into action, and data into dignity
+            {t("impact.closingTitle")}
           </h2>
           <p className="text-lg text-muted-foreground text-center max-w-3xl mx-auto">
-            Every number represents a person earning income, a tree growing, or a community 
-            becoming more resilient. Join us in creating measurable environmental and social impact.
+            {t("impact.closingDesc")}
           </p>
         </div>
       </main>

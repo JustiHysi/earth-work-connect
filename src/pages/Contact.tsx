@@ -22,10 +22,9 @@ const Contact = () => {
     e.preventDefault();
     setLoading(true);
     
-    // Simulate form submission
     await new Promise(resolve => setTimeout(resolve, 1000));
     
-    toast.success("Message sent! We'll get back to you soon. 📧");
+    toast.success(t("contact.messageSent"));
     setFormData({ name: "", email: "", message: "" });
     setLoading(false);
   };
@@ -81,7 +80,7 @@ const Contact = () => {
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-2xl">Send us a message</CardTitle>
+              <CardTitle className="text-2xl">{t("contact.sendMessage")}</CardTitle>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">

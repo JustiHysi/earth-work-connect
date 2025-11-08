@@ -13,7 +13,7 @@ const About = () => {
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Thank you for subscribing! 🌍");
+    toast.success(t("about.subscribeSuccess"));
     setEmail("");
   };
 

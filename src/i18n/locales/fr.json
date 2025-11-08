@@ -40,7 +40,22 @@
     "treesPlanted": "Arbres Plantés",
     "co2Offset": "CO₂ Compensé (tonnes)",
     "activeWorkers": "Travailleurs Actifs",
-    "jobsCompleted": "Emplois Terminés"
+    "jobsCompleted": "Emplois Terminés",
+    "pageDescription": "Suivre le changement environnemental réel à travers des micro-emplois vérifiés. Chaque arbre planté, chaque panneau solaire entretenu et chaque communauté autonomisée crée un impact durable.",
+    "reforestation": "Reboisement",
+    "reforestationDesc": "Notre communauté a planté plus de 15 000 arbres dans les régions vulnérables, contribuant à restaurer les écosystèmes et à combattre le changement climatique, un semis à la fois.",
+    "carbonOffset": "Compensation Carbone",
+    "carbonOffsetDesc": "Grâce à l'entretien des énergies propres et aux initiatives de réduction des déchets, nous avons compensé plus de 850 tonnes d'émissions de CO₂ par an.",
+    "communityEmpowerment": "Autonomisation Communautaire",
+    "communityEmpowermentDesc": "Plus de 3 200 travailleurs ont gagné un revenu durable tout en renforçant la résilience climatique dans leurs communautés.",
+    "globalReach": "Portée Mondiale",
+    "globalReachDesc": "Work4Earth opère dans plus de 15 pays, reliant les ONG aux travailleurs locaux pour créer un impact environnemental et économique.",
+    "sdgAlignment": "Alignement ODD",
+    "sdgAlignmentDesc": "Notre travail soutient directement l'Objectif de Développement Durable 10 de l'ONU (Réduction des Inégalités) en fournissant un accès égal au travail digne.",
+    "growingImpact": "Impact Croissant",
+    "growingImpactDesc": "Avec plus de 12 500 emplois terminés et en croissance, notre plateforme continue d'étendre l'action environnementale à travers le monde.",
+    "closingTitle": "Transformer la sensibilisation en action, et les données en dignité",
+    "closingDesc": "Chaque chiffre représente une personne gagnant un revenu, un arbre qui pousse ou une communauté devenant plus résiliente. Rejoignez-nous pour créer un impact environnemental et social mesurable."
   },
   "dashboard": {
     "title": "Tableau de Bord",
@@ -50,7 +65,12 @@
     "browseJobs": "Parcourir les Emplois",
     "viewMap": "Voir la Carte",
     "postJob": "Publier un Nouvel Emploi",
-    "signOut": "Se Déconnecter"
+    "signOut": "Se Déconnecter",
+    "growingFuture": "Cultiver notre avenir",
+    "carbonReduced": "Carbone réduit",
+    "tasksFinished": "Tâches terminées",
+    "totalEarnings": "Gains Totaux",
+    "incomeGenerated": "Revenus générés"
   },
   "auth": {
     "title": "Travail<span>4</span>Terre",
@@ -124,7 +144,8 @@
     "joinMovement": "Rejoignez le Mouvement",
     "newsletter": "Abonnez-vous à notre newsletter pour des mises à jour",
     "emailPlaceholder": "Entrez votre email",
-    "subscribe": "S'Abonner"
+    "subscribe": "S'Abonner",
+    "subscribeSuccess": "Merci pour votre abonnement ! 🌍"
   },
   "contact": {
     "title": "Nous Contacter",
@@ -136,7 +157,9 @@
     "sending": "Envoi...",
     "address": "Adresse",
     "phone": "Téléphone",
-    "emailLabel": "Email"
+    "emailLabel": "Email",
+    "sendMessage": "Envoyez-nous un message",
+    "messageSent": "Message envoyé ! Nous vous recontacterons bientôt. 📧"
   },
   "terms": {
     "title": "Conditions d'Utilisation",
