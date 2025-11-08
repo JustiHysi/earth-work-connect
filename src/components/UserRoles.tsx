@@ -3,6 +3,19 @@ import { Button } from "@/components/ui/button";
 import { UserCircle, Briefcase, Building2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/hooks/use-toast";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { useState, useEffect } from "react";
 
 const getRoles = (t: any) => [
   {
@@ -35,6 +48,90 @@ export const UserRoles = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const roles = getRoles(t);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [selectedRole, setSelectedRole] = useState<string | null>(null);
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+  const checkAuth = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    setIsAuthenticated(!!session);
+  };
+
+  const handleRoleSelection = async (roleValue: string) => {
+    if (!isAuthenticated) {
+      navigate(`/auth?role=${roleValue}`);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    setSelectedRole(roleValue);
+    setShowConfirmDialog(true);
+  };
+
+  const confirmRoleChange = async () => {
+    if (!selectedRole) return;
+
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        navigate('/auth');
+        return;
+      }
+
+      // Check if user can change role (7 days restriction)
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('role_changed_at')
+        .eq('id', session.user.id)
+        .single();
+
+      if (profile?.role_changed_at) {
+        const lastChanged = new Date(profile.role_changed_at);
+        const now = new Date();
+        const daysSinceChange = Math.floor((now.getTime() - lastChanged.getTime()) / (1000 * 60 * 60 * 24));
+
+        if (daysSinceChange < 7) {
+          const daysRemaining = 7 - daysSinceChange;
+          toast({
+            title: "Cannot Change Role",
+            description: `You can change your role again in ${daysRemaining} day${daysRemaining > 1 ? 's' : ''}`,
+            variant: "destructive",
+          });
+          setShowConfirmDialog(false);
+          return;
+        }
+      }
+
+      const { error } = await supabase
+        .from('profiles')
+        .update({ 
+          role: selectedRole as 'volunteer' | 'worker' | 'ngo',
+          role_changed_at: new Date().toISOString()
+        })
+        .eq('id', session.user.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Role Updated",
+        description: `Your role has been changed to ${selectedRole}. You can change it again in 7 days.`,
+      });
+
+      setShowConfirmDialog(false);
+      navigate('/dashboard');
+    } catch (error: any) {
+      console.error('Error updating role:', error);
+      toast({
+        title: "Error",
+        description: "Failed to update role. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
 
   return (
     <section className="py-16 bg-background" id="about">
@@ -70,10 +167,7 @@ export const UserRoles = () => {
                 <Button 
                   className="w-full" 
                   variant="default"
-                  onClick={() => {
-                    navigate(`/auth?role=${role.roleValue}`);
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
+                  onClick={() => handleRoleSelection(role.roleValue)}
                 >
                   {role.cta}
                 </Button>
@@ -81,6 +175,29 @@ export const UserRoles = () => {
             </Card>
           ))}
         </div>
+
+        <AlertDialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Confirm Role Change</AlertDialogTitle>
+              <AlertDialogDescription className="space-y-2">
+                <p>Are you sure you want to change your role to <span className="font-semibold capitalize">{selectedRole}</span>?</p>
+                <p className="text-destructive font-medium">
+                  ⚠️ This change cannot be reversed for 7 days.
+                </p>
+                <p className="text-sm">
+                  Choose carefully as you'll need to wait a full week before you can change your role again.
+                </p>
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={confirmRoleChange}>
+                Yes, Change Role
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </section>
   );
