@@ -14,7 +14,181 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      impact_stats: {
+        Row: {
+          co2_offset_kg: number
+          earnings_usd: number
+          id: string
+          jobs_completed: number
+          trees_planted: number
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          co2_offset_kg?: number
+          earnings_usd?: number
+          id?: string
+          jobs_completed?: number
+          trees_planted?: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          co2_offset_kg?: number
+          earnings_usd?: number
+          id?: string
+          jobs_completed?: number
+          trees_planted?: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "impact_stats_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      job_applications: {
+        Row: {
+          applicant_id: string
+          created_at: string
+          id: string
+          job_id: string
+          message: string | null
+          status: string
+        }
+        Insert: {
+          applicant_id: string
+          created_at?: string
+          id?: string
+          job_id: string
+          message?: string | null
+          status?: string
+        }
+        Update: {
+          applicant_id?: string
+          created_at?: string
+          id?: string
+          job_id?: string
+          message?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_applications_applicant_id_fkey"
+            columns: ["applicant_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "job_applications_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      jobs: {
+        Row: {
+          category: Database["public"]["Enums"]["job_category"]
+          created_at: string
+          created_by: string | null
+          description: string
+          duration_days: number
+          id: string
+          impact_description: string
+          latitude: number
+          location_name: string
+          longitude: number
+          pay_per_day: number
+          status: Database["public"]["Enums"]["job_status"]
+          title: string
+          updated_at: string
+          urgency: Database["public"]["Enums"]["job_urgency"]
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["job_category"]
+          created_at?: string
+          created_by?: string | null
+          description: string
+          duration_days: number
+          id?: string
+          impact_description: string
+          latitude: number
+          location_name: string
+          longitude: number
+          pay_per_day: number
+          status?: Database["public"]["Enums"]["job_status"]
+          title: string
+          updated_at?: string
+          urgency?: Database["public"]["Enums"]["job_urgency"]
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["job_category"]
+          created_at?: string
+          created_by?: string | null
+          description?: string
+          duration_days?: number
+          id?: string
+          impact_description?: string
+          latitude?: number
+          location_name?: string
+          longitude?: number
+          pay_per_day?: number
+          status?: Database["public"]["Enums"]["job_status"]
+          title?: string
+          updated_at?: string
+          urgency?: Database["public"]["Enums"]["job_urgency"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "jobs_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string
+          full_name: string | null
+          id: string
+          location: string | null
+          role: Database["public"]["Enums"]["user_role"]
+          skills: string[] | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          full_name?: string | null
+          id: string
+          location?: string | null
+          role?: Database["public"]["Enums"]["user_role"]
+          skills?: string[] | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          full_name?: string | null
+          id?: string
+          location?: string | null
+          role?: Database["public"]["Enums"]["user_role"]
+          skills?: string[] | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +197,20 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      job_category:
+        | "reforestation"
+        | "clean_energy"
+        | "resilience"
+        | "food_security"
+        | "coastal_protection"
+        | "water_conservation"
+        | "green_transport"
+        | "waste_reduction"
+        | "biodiversity"
+        | "water_quality"
+      job_status: "open" | "in_progress" | "completed" | "cancelled"
+      job_urgency: "high" | "medium" | "low"
+      user_role: "volunteer" | "worker" | "ngo"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +337,22 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      job_category: [
+        "reforestation",
+        "clean_energy",
+        "resilience",
+        "food_security",
+        "coastal_protection",
+        "water_conservation",
+        "green_transport",
+        "waste_reduction",
+        "biodiversity",
+        "water_quality",
+      ],
+      job_status: ["open", "in_progress", "completed", "cancelled"],
+      job_urgency: ["high", "medium", "low"],
+      user_role: ["volunteer", "worker", "ngo"],
+    },
   },
 } as const
