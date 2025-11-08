@@ -87,7 +87,7 @@ export default function Dashboard() {
     <div className="min-h-screen bg-background">
       <header className="border-b border-border bg-background/95 backdrop-blur">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <h1 className="text-2xl font-bold">{t("dashboard.title")}</h1>
+          <h1 className="text-2xl font-bold cursor-pointer hover:text-primary transition-colors" onClick={() => navigate("/")}>Work4Earth</h1>
           <div className="flex items-center gap-4">
             <span className="text-sm text-muted-foreground">
               {profile?.full_name || profile?.email}
