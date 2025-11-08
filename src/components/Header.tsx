@@ -46,22 +46,32 @@ export const Header = () => {
     setIsAdmin(!!data);
   };
 
-  const NavLinks = () => (
-    <>
-      <a href="#jobs" className="text-foreground hover:text-primary transition-colors font-medium">
-        {t('nav.browseJobs')}
-      </a>
-      <button onClick={() => navigate("/impact")} className="text-foreground hover:text-primary transition-colors font-medium">
-        {t('nav.ourImpact')}
-      </button>
-      <button onClick={() => navigate("/about")} className="text-foreground hover:text-primary transition-colors font-medium">
-        {t('nav.about')}
-      </button>
-      <button onClick={() => navigate("/contact")} className="text-foreground hover:text-primary transition-colors font-medium">
-        {t('nav.contact')}
-      </button>
-    </>
-  );
+  const NavLinks = () => {
+    const handleBrowseJobs = () => {
+      navigate("/");
+      setTimeout(() => {
+        const jobsSection = document.getElementById("jobs");
+        jobsSection?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    };
+
+    return (
+      <>
+        <button onClick={handleBrowseJobs} className="text-foreground hover:text-primary transition-colors font-medium">
+          {t('nav.browseJobs')}
+        </button>
+        <button onClick={() => navigate("/impact")} className="text-foreground hover:text-primary transition-colors font-medium">
+          {t('nav.ourImpact')}
+        </button>
+        <button onClick={() => navigate("/about")} className="text-foreground hover:text-primary transition-colors font-medium">
+          {t('nav.about')}
+        </button>
+        <button onClick={() => navigate("/contact")} className="text-foreground hover:text-primary transition-colors font-medium">
+          {t('nav.contact')}
+        </button>
+      </>
+    );
+  };
 
   return (
     <header className="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
