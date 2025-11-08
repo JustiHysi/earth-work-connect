@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import { UserCircle, Briefcase, Building2 } from "lucide-react";
 
 interface RoleChangeDialogProps {
   open: boolean;
@@ -25,6 +27,7 @@ export function RoleChangeDialog({
   const { t } = useTranslation();
   const [selectedRole, setSelectedRole] = useState(currentRole);
   const [isChanging, setIsChanging] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   const canChangeRole = () => {
     if (!roleChangedAt) return true;
@@ -46,17 +49,22 @@ export function RoleChangeDialog({
     return Math.max(0, Math.ceil(7 - daysSinceChange));
   };
 
-  const handleRoleChange = async () => {
+  const handleRoleSelect = (role: string) => {
     if (!canChangeRole()) {
       toast.error(`You can change your role in ${getDaysUntilChange()} days`);
       return;
     }
 
-    if (selectedRole === currentRole) {
-      toast.info("Please select a different role");
+    if (role === currentRole) {
+      toast.info("This is already your current role");
       return;
     }
 
+    setSelectedRole(role);
+    setShowConfirmation(true);
+  };
+
+  const handleRoleChange = async () => {
     setIsChanging(true);
     try {
       const { data: { user } } = await supabase.auth.getUser();
@@ -72,8 +80,9 @@ export function RoleChangeDialog({
 
       if (error) throw error;
 
-      toast.success("Role changed successfully!");
+      toast.success("Role changed successfully! You can change it again in 7 days.");
       onRoleChanged();
+      setShowConfirmation(false);
       onOpenChange(false);
     } catch (error: any) {
       console.error('Error changing role:', error);
@@ -84,69 +93,108 @@ export function RoleChangeDialog({
   };
 
   const roleOptions = [
-    { value: 'volunteer', label: 'Volunteer', description: 'Help environmental causes' },
-    { value: 'worker', label: 'Worker', description: 'Earn while making an impact' },
-    { value: 'ngo', label: 'NGO', description: 'Post environmental jobs' },
+    { 
+      value: 'volunteer', 
+      label: 'Volunteer', 
+      description: 'Help environmental causes',
+      icon: <UserCircle className="h-8 w-8" />
+    },
+    { 
+      value: 'worker', 
+      label: 'Worker', 
+      description: 'Earn while making an impact',
+      icon: <Briefcase className="h-8 w-8" />
+    },
+    { 
+      value: 'ngo', 
+      label: 'NGO', 
+      description: 'Post environmental jobs',
+      icon: <Building2 className="h-8 w-8" />
+    },
   ];
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Change Your Role</DialogTitle>
-          <DialogDescription>
-            {canChangeRole() 
-              ? "Select a new role. You can change it again in 7 days."
-              : `You can change your role in ${getDaysUntilChange()} days.`
-            }
-          </DialogDescription>
-        </DialogHeader>
+    <>
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="sm:max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="text-2xl">Change Your Role</DialogTitle>
+            <DialogDescription>
+              {canChangeRole() 
+                ? "Select a new role below. You can change it again in 7 days."
+                : `You can change your role in ${getDaysUntilChange()} days.`
+              }
+            </DialogDescription>
+          </DialogHeader>
 
-        <RadioGroup value={selectedRole} onValueChange={setSelectedRole} className="space-y-4">
-          {roleOptions.map((option) => (
-            <div 
-              key={option.value} 
-              className={`flex items-start space-x-3 border rounded-lg p-4 transition-colors cursor-pointer ${
-                canChangeRole() ? 'hover:bg-accent' : 'opacity-50 cursor-not-allowed'
-              } ${selectedRole === option.value ? 'border-primary bg-primary/5' : ''}`}
-              onClick={() => canChangeRole() && setSelectedRole(option.value)}
-            >
-              <RadioGroupItem 
-                value={option.value} 
-                id={option.value} 
-                disabled={false}
-                className="mt-1"
-              />
-              <div className="flex-1">
-                <Label 
-                  htmlFor={option.value} 
-                  className={`font-semibold ${canChangeRole() ? 'cursor-pointer' : 'cursor-not-allowed'}`}
-                >
-                  {option.label}
-                  {option.value === currentRole && (
-                    <span className="ml-2 text-xs bg-primary/20 text-primary px-2 py-0.5 rounded-full">
-                      Current
-                    </span>
-                  )}
-                </Label>
-                <p className="text-sm text-muted-foreground">{option.description}</p>
-              </div>
-            </div>
-          ))}
-        </RadioGroup>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+            {roleOptions.map((option) => (
+              <button
+                key={option.value}
+                onClick={() => handleRoleSelect(option.value)}
+                disabled={!canChangeRole()}
+                className={`
+                  relative p-6 rounded-lg border-2 transition-all text-left
+                  ${selectedRole === option.value ? 'border-primary bg-primary/10' : 'border-border'}
+                  ${canChangeRole() ? 'hover:border-primary hover:shadow-lg cursor-pointer' : 'opacity-50 cursor-not-allowed'}
+                  ${option.value === currentRole ? 'ring-2 ring-primary/30' : ''}
+                `}
+              >
+                <div className="flex flex-col items-center text-center space-y-3">
+                  <div className={`p-3 rounded-full ${
+                    selectedRole === option.value ? 'bg-primary text-primary-foreground' : 'bg-primary/10 text-primary'
+                  }`}>
+                    {option.icon}
+                  </div>
+                  
+                  <div>
+                    <h3 className="font-bold text-lg mb-1">
+                      {option.label}
+                    </h3>
+                    {option.value === currentRole && (
+                      <span className="inline-block text-xs bg-primary text-primary-foreground px-2 py-1 rounded-full mb-2">
+                        Current Role
+                      </span>
+                    )}
+                    <p className="text-sm text-muted-foreground">
+                      {option.description}
+                    </p>
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
 
-        <div className="flex justify-end gap-2 mt-4">
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
-          </Button>
-          <Button 
-            onClick={handleRoleChange} 
-            disabled={!canChangeRole() || isChanging || selectedRole === currentRole}
-          >
-            {isChanging ? "Changing..." : "Change Role"}
-          </Button>
-        </div>
-      </DialogContent>
-    </Dialog>
+          <div className="flex justify-end mt-6">
+            <Button variant="outline" onClick={() => onOpenChange(false)}>
+              Close
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <AlertDialog open={showConfirmation} onOpenChange={setShowConfirmation}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Confirm Role Change</AlertDialogTitle>
+            <AlertDialogDescription className="space-y-3">
+              <p>Are you sure you want to change your role to <span className="font-semibold capitalize text-foreground">{selectedRole}</span>?</p>
+              <p className="text-destructive font-semibold flex items-center gap-2">
+                ⚠️ This change cannot be reversed for 7 days!
+              </p>
+              <p className="text-sm">
+                You will need to wait a full week before you can change your role again. Make sure this is the right choice.
+              </p>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isChanging}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleRoleChange} disabled={isChanging}>
+              {isChanging ? "Changing..." : "Yes, Change Role"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 }
