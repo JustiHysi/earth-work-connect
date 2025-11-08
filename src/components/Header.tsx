@@ -1,39 +1,65 @@
 import { Button } from "@/components/ui/button";
-import { Globe, Menu, User } from "lucide-react";
+import { Globe, Menu, User, Shield } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { User as SupabaseUser } from "@supabase/supabase-js";
+import { LanguageSwitcher } from "./LanguageSwitcher";
+import { useTranslation } from "react-i18next";
 
 export const Header = () => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState<SupabaseUser | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
+      if (session?.user) {
+        checkAdminRole(session.user.id);
+      }
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
+      if (session?.user) {
+        checkAdminRole(session.user.id);
+      } else {
+        setIsAdmin(false);
+      }
     });
 
     return () => subscription.unsubscribe();
   }, []);
 
+  const checkAdminRole = async (userId: string) => {
+    const { data } = await supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', userId)
+      .eq('role', 'admin')
+      .single();
+    
+    setIsAdmin(!!data);
+  };
+
   const NavLinks = () => (
     <>
       <a href="#jobs" className="text-foreground hover:text-primary transition-colors font-medium">
-        Browse Jobs
+        {t('nav.browseJobs')}
       </a>
       <a href="#impact" className="text-foreground hover:text-primary transition-colors font-medium">
-        Our Impact
+        {t('nav.ourImpact')}
       </a>
-      <a href="#about" className="text-foreground hover:text-primary transition-colors font-medium">
-        About
-      </a>
+      <button onClick={() => navigate("/about")} className="text-foreground hover:text-primary transition-colors font-medium">
+        {t('nav.about')}
+      </button>
+      <button onClick={() => navigate("/contact")} className="text-foreground hover:text-primary transition-colors font-medium">
+        {t('nav.contact')}
+      </button>
     </>
   );
 
@@ -50,14 +76,23 @@ export const Header = () => {
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-6">
           <NavLinks />
+          <LanguageSwitcher />
           {user ? (
-            <Button variant="default" size="sm" onClick={() => navigate("/dashboard")}>
-              <User className="mr-2 h-4 w-4" />
-              Dashboard
-            </Button>
+            <>
+              {isAdmin && (
+                <Button variant="outline" size="sm" onClick={() => navigate("/admin")}>
+                  <Shield className="mr-2 h-4 w-4" />
+                  {t('nav.admin')}
+                </Button>
+              )}
+              <Button variant="default" size="sm" onClick={() => navigate("/dashboard")}>
+                <User className="mr-2 h-4 w-4" />
+                {t('nav.dashboard')}
+              </Button>
+            </>
           ) : (
             <Button variant="default" size="sm" onClick={() => navigate("/auth")}>
-              Get Started
+              {t('nav.getStarted')}
             </Button>
           )}
         </nav>
@@ -72,14 +107,23 @@ export const Header = () => {
           <SheetContent>
             <nav className="flex flex-col gap-4 mt-8">
               <NavLinks />
+              <LanguageSwitcher />
               {user ? (
-                <Button variant="default" className="w-full" onClick={() => navigate("/dashboard")}>
-                  <User className="mr-2 h-4 w-4" />
-                  Dashboard
-                </Button>
+                <>
+                  {isAdmin && (
+                    <Button variant="outline" className="w-full" onClick={() => navigate("/admin")}>
+                      <Shield className="mr-2 h-4 w-4" />
+                      {t('nav.admin')}
+                    </Button>
+                  )}
+                  <Button variant="default" className="w-full" onClick={() => navigate("/dashboard")}>
+                    <User className="mr-2 h-4 w-4" />
+                    {t('nav.dashboard')}
+                  </Button>
+                </>
               ) : (
                 <Button variant="default" className="w-full" onClick={() => navigate("/auth")}>
-                  Get Started
+                  {t('nav.getStarted')}
                 </Button>
               )}
             </nav>
