@@ -188,6 +188,7 @@ export type Database = {
           id: string
           location: string | null
           role: Database["public"]["Enums"]["user_role"]
+          role_changed_at: string | null
           skills: string[] | null
           updated_at: string
         }
@@ -198,6 +199,7 @@ export type Database = {
           id: string
           location?: string | null
           role?: Database["public"]["Enums"]["user_role"]
+          role_changed_at?: string | null
           skills?: string[] | null
           updated_at?: string
         }
@@ -208,6 +210,7 @@ export type Database = {
           id?: string
           location?: string | null
           role?: Database["public"]["Enums"]["user_role"]
+          role_changed_at?: string | null
           skills?: string[] | null
           updated_at?: string
         }

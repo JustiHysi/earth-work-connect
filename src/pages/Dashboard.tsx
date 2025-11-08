@@ -3,15 +3,17 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { TreePine, Droplets, Briefcase, DollarSign, LogOut } from "lucide-react";
+import { TreePine, Droplets, Briefcase, DollarSign, LogOut, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import { RoleChangeDialog } from "@/components/RoleChangeDialog";
 
 interface Profile {
   id: string;
   email: string;
   full_name: string | null;
   role: string;
+  role_changed_at: string | null;
 }
 
 interface ImpactStats {
@@ -27,6 +29,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [stats, setStats] = useState<ImpactStats | null>(null);
+  const [showRoleDialog, setShowRoleDialog] = useState(false);
 
   useEffect(() => {
     checkAuth();
@@ -105,9 +108,20 @@ export default function Dashboard() {
           <h2 className="text-3xl font-bold text-foreground mb-2">
             {t("dashboard.welcome")}, {profile?.full_name?.split(" ")[0]}!
           </h2>
-          <p className="text-muted-foreground">
-            {t("dashboard.registeredAs")} <span className="font-semibold text-primary capitalize">{profile?.role}</span>
-          </p>
+          <div className="flex items-center gap-4">
+            <p className="text-muted-foreground">
+              {t("dashboard.registeredAs")} <span className="font-semibold text-primary capitalize">{profile?.role}</span>
+            </p>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={() => setShowRoleDialog(true)}
+              className="gap-2"
+            >
+              <RefreshCw className="h-4 w-4" />
+              Change Role
+            </Button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -177,6 +191,14 @@ export default function Dashboard() {
           </Card>
         </div>
       </main>
+
+      <RoleChangeDialog
+        open={showRoleDialog}
+        onOpenChange={setShowRoleDialog}
+        currentRole={profile?.role || ''}
+        roleChangedAt={profile?.role_changed_at || null}
+        onRoleChanged={checkAuth}
+      />
     </div>
   );
 }
