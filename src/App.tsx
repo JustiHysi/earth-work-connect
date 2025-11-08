@@ -7,6 +7,7 @@ import { ChatbotWidget } from "@/components/ChatbotWidget";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
+import Profile from "./pages/Profile";
 import Jobs from "./pages/Jobs";
 import MapView from "./pages/MapView";
 import PostJob from "./pages/PostJob";
@@ -32,6 +33,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/jobs" element={<Jobs />} />
           <Route path="/map" element={<MapView />} />
           <Route path="/post-job" element={<PostJob />} />

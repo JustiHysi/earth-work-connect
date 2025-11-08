@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { TreePine, Droplets, Briefcase, DollarSign, LogOut, RefreshCw } from "lucide-react";
+import { TreePine, Droplets, Briefcase, DollarSign, LogOut, RefreshCw, User } from "lucide-react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { RoleChangeDialog } from "@/components/RoleChangeDialog";
@@ -176,6 +176,10 @@ export default function Dashboard() {
               <CardTitle>{t("dashboard.quickActions")}</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-wrap gap-4">
+              <Button onClick={() => navigate("/profile")}>
+                <User className="mr-2 h-4 w-4" />
+                Edit Profile
+              </Button>
               <Button onClick={() => navigate("/jobs")}>
                 {t("dashboard.browseJobs")}
               </Button>
