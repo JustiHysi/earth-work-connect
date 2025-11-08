@@ -1,10 +1,27 @@
 import { Button } from "@/components/ui/button";
-import { Globe, Menu } from "lucide-react";
-import { useState } from "react";
+import { Globe, Menu, User } from "lucide-react";
+import { useState, useEffect } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { User as SupabaseUser } from "@supabase/supabase-js";
 
 export const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [user, setUser] = useState<SupabaseUser | null>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const NavLinks = () => (
     <>
@@ -23,7 +40,7 @@ export const Header = () => {
   return (
     <header className="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate("/")}>
           <Globe className="h-8 w-8 text-primary" />
           <h1 className="text-2xl font-bold text-foreground">
             Work<span className="text-primary">4</span>Earth
@@ -33,9 +50,16 @@ export const Header = () => {
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-6">
           <NavLinks />
-          <Button variant="default" size="sm">
-            Get Started
-          </Button>
+          {user ? (
+            <Button variant="default" size="sm" onClick={() => navigate("/dashboard")}>
+              <User className="mr-2 h-4 w-4" />
+              Dashboard
+            </Button>
+          ) : (
+            <Button variant="default" size="sm" onClick={() => navigate("/auth")}>
+              Get Started
+            </Button>
+          )}
         </nav>
 
         {/* Mobile Navigation */}
@@ -48,9 +72,16 @@ export const Header = () => {
           <SheetContent>
             <nav className="flex flex-col gap-4 mt-8">
               <NavLinks />
-              <Button variant="default" className="w-full">
-                Get Started
-              </Button>
+              {user ? (
+                <Button variant="default" className="w-full" onClick={() => navigate("/dashboard")}>
+                  <User className="mr-2 h-4 w-4" />
+                  Dashboard
+                </Button>
+              ) : (
+                <Button variant="default" className="w-full" onClick={() => navigate("/auth")}>
+                  Get Started
+                </Button>
+              )}
             </nav>
           </SheetContent>
         </Sheet>

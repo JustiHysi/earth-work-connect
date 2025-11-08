@@ -41,6 +41,7 @@ export const Hero = () => {
               size="lg"
               variant="secondary"
               className="text-lg h-14 px-8 shadow-lg hover:shadow-xl transition-all"
+              onClick={() => window.location.href = '/map'}
             >
               <MapPin className="mr-2 h-5 w-5" />
               Find Jobs Near You
@@ -50,6 +51,7 @@ export const Hero = () => {
               size="lg"
               variant="outline"
               className="text-lg h-14 px-8 bg-primary-foreground/10 backdrop-blur-sm border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/20"
+              onClick={() => window.location.href = '#about'}
             >
               Learn More
             </Button>

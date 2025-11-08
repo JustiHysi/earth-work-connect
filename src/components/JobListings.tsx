@@ -3,186 +3,88 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { MapPin, Clock, DollarSign, Search, TreePine, Sun, Droplets, Wrench, Leaf, Wind } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface Job {
-  id: number;
+  id: string;
   title: string;
-  location: string;
+  location_name: string;
   category: string;
-  pay: string;
-  duration: string;
+  pay_per_day: number;
+  duration_days: number;
   description: string;
-  impact: string;
-  icon: React.ReactNode;
-  urgency: "high" | "medium" | "low";
+  impact_description: string;
+  urgency: string;
 }
 
-const jobs: Job[] = [
-  {
-    id: 1,
-    title: "Urban Tree Planting Initiative",
-    location: "Nairobi, Kenya",
-    category: "Reforestation",
-    pay: "$15/day",
-    duration: "3 days",
-    description: "Help plant 500 indigenous trees in urban areas to combat air pollution and provide shade.",
-    impact: "50 kg CO₂ offset per tree planted",
-    icon: <TreePine className="h-5 w-5" />,
-    urgency: "high"
-  },
-  {
-    id: 2,
-    title: "Solar Panel Cleaning & Maintenance",
-    location: "Rajasthan, India",
-    category: "Clean Energy",
-    pay: "$20/day",
-    duration: "5 days",
-    description: "Clean and inspect solar panels at community energy installations to maximize efficiency.",
-    impact: "15% efficiency increase",
-    icon: <Sun className="h-5 w-5" />,
-    urgency: "medium"
-  },
-  {
-    id: 3,
-    title: "Flood Prevention Drainage Work",
-    location: "Manila, Philippines",
-    category: "Resilience",
-    pay: "$18/day",
-    duration: "7 days",
-    description: "Clear drainage systems and reinforce flood barriers to protect vulnerable communities.",
-    impact: "Protects 200+ households",
-    icon: <Droplets className="h-5 w-5" />,
-    urgency: "high"
-  },
-  {
-    id: 4,
-    title: "Community Garden Setup",
-    location: "São Paulo, Brazil",
-    category: "Food Security",
-    pay: "$12/day",
-    duration: "4 days",
-    description: "Build raised beds and irrigation systems for local food production in urban areas.",
-    impact: "Feeds 50+ families monthly",
-    icon: <Leaf className="h-5 w-5" />,
-    urgency: "medium"
-  },
-  {
-    id: 5,
-    title: "Wind Turbine Inspection",
-    location: "Cape Town, South Africa",
-    category: "Clean Energy",
-    pay: "$25/day",
-    duration: "2 days",
-    description: "Assist technicians with visual inspections and basic maintenance of wind turbines.",
-    impact: "Powers 100+ homes",
-    icon: <Wind className="h-5 w-5" />,
-    urgency: "low"
-  },
-  {
-    id: 6,
-    title: "Mangrove Restoration Project",
-    location: "Bangladesh",
-    category: "Coastal Protection",
-    pay: "$14/day",
-    duration: "6 days",
-    description: "Plant mangrove seedlings to restore coastal ecosystems and protect against storm surge.",
-    impact: "85 kg CO₂ offset per mangrove",
-    icon: <TreePine className="h-5 w-5" />,
-    urgency: "high"
-  },
-  {
-    id: 7,
-    title: "Rainwater Harvesting Installation",
-    location: "Lima, Peru",
-    category: "Water Conservation",
-    pay: "$16/day",
-    duration: "3 days",
-    description: "Install rainwater collection systems in schools and community centers.",
-    impact: "5000L water saved monthly",
-    icon: <Droplets className="h-5 w-5" />,
-    urgency: "medium"
-  },
-  {
-    id: 8,
-    title: "Bicycle Repair Hub Assistant",
-    location: "Amsterdam, Netherlands",
-    category: "Green Transport",
-    pay: "$22/day",
-    duration: "5 days",
-    description: "Help maintain and repair bicycles to promote sustainable urban transportation.",
-    impact: "Reduces 100kg CO₂/month",
-    icon: <Wrench className="h-5 w-5" />,
-    urgency: "low"
-  },
-  {
-    id: 9,
-    title: "Compost Facility Operations",
-    location: "Accra, Ghana",
-    category: "Waste Reduction",
-    pay: "$13/day",
-    duration: "4 days",
-    description: "Sort organic waste and maintain composting systems for local agriculture.",
-    impact: "2 tons waste diverted weekly",
-    icon: <Leaf className="h-5 w-5" />,
-    urgency: "medium"
-  },
-  {
-    id: 10,
-    title: "Rooftop Solar Installation Support",
-    location: "Mexico City, Mexico",
-    category: "Clean Energy",
-    pay: "$18/day",
-    duration: "3 days",
-    description: "Assist qualified installers with rooftop solar panel installation for low-income housing.",
-    impact: "Powers 5 homes per installation",
-    icon: <Sun className="h-5 w-5" />,
-    urgency: "high"
-  },
-  {
-    id: 11,
-    title: "Urban Bee Habitat Creation",
-    location: "London, UK",
-    category: "Biodiversity",
-    pay: "$17/day",
-    duration: "2 days",
-    description: "Build and install bee hotels and pollinator gardens in urban spaces.",
-    impact: "Supports 1000+ pollinators",
-    icon: <Leaf className="h-5 w-5" />,
-    urgency: "low"
-  },
-  {
-    id: 12,
-    title: "River Cleanup Initiative",
-    location: "Jakarta, Indonesia",
-    category: "Water Quality",
-    pay: "$11/day",
-    duration: "4 days",
-    description: "Remove plastic waste and debris from urban waterways to improve ecosystem health.",
-    impact: "500kg plastic removed",
-    icon: <Droplets className="h-5 w-5" />,
-    urgency: "high"
-  }
-];
+const categoryIcons: Record<string, React.ReactNode> = {
+  reforestation: <TreePine className="h-5 w-5" />,
+  clean_energy: <Sun className="h-5 w-5" />,
+  resilience: <Droplets className="h-5 w-5" />,
+  food_security: <Leaf className="h-5 w-5" />,
+  coastal_protection: <TreePine className="h-5 w-5" />,
+  water_conservation: <Droplets className="h-5 w-5" />,
+  green_transport: <Wrench className="h-5 w-5" />,
+  waste_reduction: <Leaf className="h-5 w-5" />,
+  biodiversity: <Leaf className="h-5 w-5" />,
+  water_quality: <Droplets className="h-5 w-5" />,
+};
 
 export const JobListings = () => {
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
 
   const categories = ["All", "Reforestation", "Clean Energy", "Resilience", "Food Security", "Coastal Protection", "Water Conservation", "Green Transport", "Waste Reduction", "Biodiversity", "Water Quality"];
 
+  useEffect(() => {
+    fetchJobs();
+  }, []);
+
+  const fetchJobs = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('jobs')
+        .select('*')
+        .eq('status', 'open');
+
+      if (error) throw error;
+      setJobs(data || []);
+    } catch (error) {
+      console.error('Error fetching jobs:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const filteredJobs = jobs.filter(job => {
     const matchesSearch = job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         job.location.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === "All" || job.category === selectedCategory;
+                         job.location_name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === "All" || 
+                           job.category.replace('_', ' ').toLowerCase() === selectedCategory.toLowerCase().replace(' ', '_');
     return matchesSearch && matchesCategory;
   });
 
-  const urgencyColors = {
+  const urgencyColors: Record<string, string> = {
     high: "bg-destructive text-destructive-foreground",
     medium: "bg-accent text-accent-foreground",
     low: "bg-success text-success-foreground"
   };
+
+  if (loading) {
+    return (
+      <section className="py-16 bg-background" id="jobs">
+        <div className="container mx-auto px-4">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-muted-foreground">Loading jobs...</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-16 bg-background" id="jobs">
@@ -227,7 +129,7 @@ export const JobListings = () => {
               <CardHeader>
                 <div className="flex items-start justify-between mb-2">
                   <div className="p-2 bg-primary/10 rounded-lg text-primary">
-                    {job.icon}
+                    {categoryIcons[job.category] || <TreePine className="h-5 w-5" />}
                   </div>
                   <Badge className={urgencyColors[job.urgency]}>
                     {job.urgency} priority
@@ -236,7 +138,7 @@ export const JobListings = () => {
                 <CardTitle className="text-xl text-foreground">{job.title}</CardTitle>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <MapPin className="h-4 w-4" />
-                  {job.location}
+                  {job.location_name}
                 </div>
               </CardHeader>
               <CardContent className="space-y-3">
@@ -244,16 +146,16 @@ export const JobListings = () => {
                 <div className="flex items-center gap-4 text-sm">
                   <div className="flex items-center gap-1 text-success">
                     <DollarSign className="h-4 w-4" />
-                    <span className="font-semibold">{job.pay}</span>
+                    <span className="font-semibold">${job.pay_per_day}/day</span>
                   </div>
                   <div className="flex items-center gap-1 text-muted-foreground">
                     <Clock className="h-4 w-4" />
-                    <span>{job.duration}</span>
+                    <span>{job.duration_days} days</span>
                   </div>
                 </div>
                 <div className="pt-2 border-t border-border">
                   <div className="text-sm font-medium text-primary">
-                    Impact: {job.impact}
+                    Impact: {job.impact_description}
                   </div>
                 </div>
               </CardContent>
