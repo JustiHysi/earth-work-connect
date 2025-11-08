@@ -51,9 +51,9 @@ export const Header = () => {
       <a href="#jobs" className="text-foreground hover:text-primary transition-colors font-medium">
         {t('nav.browseJobs')}
       </a>
-      <a href="#impact" className="text-foreground hover:text-primary transition-colors font-medium">
+      <button onClick={() => navigate("/impact")} className="text-foreground hover:text-primary transition-colors font-medium">
         {t('nav.ourImpact')}
-      </a>
+      </button>
       <button onClick={() => navigate("/about")} className="text-foreground hover:text-primary transition-colors font-medium">
         {t('nav.about')}
       </button>
