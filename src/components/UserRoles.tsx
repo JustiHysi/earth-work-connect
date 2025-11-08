@@ -1,6 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { UserCircle, Briefcase, Building2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const roles = [
   {
@@ -8,25 +9,30 @@ const roles = [
     title: "Volunteer",
     description: "Contribute your time to environmental causes. Perfect for students and community members.",
     features: ["Browse all jobs", "Track your impact", "Earn certificates", "Join community events"],
-    cta: "Start Volunteering"
+    cta: "Start Volunteering",
+    roleValue: "volunteer"
   },
   {
     icon: <Briefcase className="h-12 w-12" />,
     title: "Worker",
     description: "Earn income through verified micro-jobs while supporting climate resilience.",
     features: ["Get paid for work", "Flexible scheduling", "Skill development", "Income tracking"],
-    cta: "Become a Worker"
+    cta: "Become a Worker",
+    roleValue: "worker"
   },
   {
     icon: <Building2 className="h-12 w-12" />,
     title: "NGO / Organization",
     description: "Post jobs, manage projects, and connect with motivated workers in your region.",
     features: ["Post unlimited jobs", "Worker management", "Impact reporting", "Priority support"],
-    cta: "Register Organization"
+    cta: "Register Organization",
+    roleValue: "ngo"
   }
 ];
 
 export const UserRoles = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="py-16 bg-background" id="about">
       <div className="container mx-auto px-4">
@@ -58,7 +64,14 @@ export const UserRoles = () => {
                     </li>
                   ))}
                 </ul>
-                <Button className="w-full" variant="default">
+                <Button 
+                  className="w-full" 
+                  variant="default"
+                  onClick={() => {
+                    navigate(`/auth?role=${role.roleValue}`);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                >
                   {role.cta}
                 </Button>
               </CardContent>

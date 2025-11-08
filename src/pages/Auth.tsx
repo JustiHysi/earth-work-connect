@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -12,11 +12,20 @@ import { toast } from "sonner";
 
 export default function Auth() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [role, setRole] = useState<"volunteer" | "worker" | "ngo">("volunteer");
+
+  useEffect(() => {
+    // Set role from URL parameter if present
+    const roleParam = searchParams.get("role") as "volunteer" | "worker" | "ngo";
+    if (roleParam && ["volunteer", "worker", "ngo"].includes(roleParam)) {
+      setRole(roleParam);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     // Check if user is already logged in
@@ -99,7 +108,7 @@ export default function Auth() {
           <p className="text-muted-foreground">Join the climate action movement</p>
         </div>
 
-        <Tabs defaultValue="signin" className="w-full">
+        <Tabs defaultValue="signup" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="signin">Sign In</TabsTrigger>
             <TabsTrigger value="signup">Sign Up</TabsTrigger>
