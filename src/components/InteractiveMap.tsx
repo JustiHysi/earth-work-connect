@@ -86,10 +86,21 @@ export const InteractiveMap = () => {
   return (
     <div className="grid lg:grid-cols-3 gap-6">
       <div className="lg:col-span-2">
-        <MapContainer center={[20, 0]} zoom={2} className="w-full h-[600px] rounded-lg shadow-lg z-0" scrollWheelZoom={true}>
-          <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+        <MapContainer
+          center={[20, 0]}
+          zoom={2}
+          className="w-full h-[600px] rounded-lg shadow-lg z-0"
+          scrollWheelZoom={true}>
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
           {jobs.map((job) => (
-            <Marker key={job.id} position={[job.latitude, job.longitude]} icon={customIcon} eventHandlers={{ click: () => setSelectedJob(job) }}>
+            <Marker
+              key={job.id}
+              position={[job.latitude, job.longitude]}
+              icon={customIcon}
+              eventHandlers={{ click: () => setSelectedJob(job) }}>
               <Popup>
                 <div className="p-2">
                   <h3 className="font-semibold text-sm mb-1">{job.title}</h3>
