@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
-import { Globe, Menu, User, Shield } from "lucide-react";
+import { Globe, Menu, User, Shield, Home } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { User as SupabaseUser } from "@supabase/supabase-js";
 import { LanguageSwitcher } from "./LanguageSwitcher";
@@ -14,6 +14,8 @@ export const Header = () => {
   const [user, setUser] = useState<SupabaseUser | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const isOnDashboard = location.pathname === '/dashboard';
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -95,9 +97,22 @@ export const Header = () => {
                   {t('nav.admin')}
                 </Button>
               )}
-              <Button variant="default" size="sm" onClick={() => navigate("/dashboard")}>
-                <User className="mr-2 h-4 w-4" />
-                {t('nav.dashboard')}
+              <Button 
+                variant="default" 
+                size="sm" 
+                onClick={() => navigate(isOnDashboard ? "/" : "/dashboard")}
+              >
+                {isOnDashboard ? (
+                  <>
+                    <Home className="mr-2 h-4 w-4" />
+                    Home
+                  </>
+                ) : (
+                  <>
+                    <User className="mr-2 h-4 w-4" />
+                    {t('nav.dashboard')}
+                  </>
+                )}
               </Button>
             </>
           ) : (
@@ -126,9 +141,22 @@ export const Header = () => {
                       {t('nav.admin')}
                     </Button>
                   )}
-                  <Button variant="default" className="w-full" onClick={() => navigate("/dashboard")}>
-                    <User className="mr-2 h-4 w-4" />
-                    {t('nav.dashboard')}
+                  <Button 
+                    variant="default" 
+                    className="w-full" 
+                    onClick={() => navigate(isOnDashboard ? "/" : "/dashboard")}
+                  >
+                    {isOnDashboard ? (
+                      <>
+                        <Home className="mr-2 h-4 w-4" />
+                        Home
+                      </>
+                    ) : (
+                      <>
+                        <User className="mr-2 h-4 w-4" />
+                        {t('nav.dashboard')}
+                      </>
+                    )}
                   </Button>
                 </>
               ) : (
