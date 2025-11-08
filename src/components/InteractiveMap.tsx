@@ -47,6 +47,43 @@ function RecenterMap({ lat, lng }: { lat: number; lng: number }) {
   return null;
 }
 
+interface MapContentProps {
+  jobs: Job[];
+  selectedJob: Job | null;
+  setSelectedJob: (job: Job | null) => void;
+}
+
+function MapContent({ jobs, selectedJob, setSelectedJob }: MapContentProps) {
+  return (
+    <>
+      <TileLayer
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      {jobs.map((job) => (
+        <Marker
+          key={job.id}
+          position={[job.latitude, job.longitude]}
+          icon={customIcon}
+          eventHandlers={{ click: () => setSelectedJob(job) }}>
+          <Popup>
+            <div className="p-2">
+              <h3 className="font-semibold text-sm mb-1">{job.title}</h3>
+              <p className="text-xs text-muted-foreground mb-2">{job.location_name}</p>
+              <div className="flex items-center gap-2 text-xs">
+                <span className="font-semibold text-success">${job.pay_per_day}/day</span>
+                <span>•</span>
+                <span>{job.duration_days} days</span>
+              </div>
+            </div>
+          </Popup>
+        </Marker>
+      ))}
+      {selectedJob && <RecenterMap lat={selectedJob.latitude} lng={selectedJob.longitude} />}
+    </>
+  );
+}
+
 export const InteractiveMap = () => {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
@@ -91,32 +128,7 @@ export const InteractiveMap = () => {
           zoom={2}
           className="w-full h-[600px] rounded-lg shadow-lg z-0"
           scrollWheelZoom={true}>
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          <Fragment>
-            {jobs.map((job) => (
-              <Marker
-                key={job.id}
-                position={[job.latitude, job.longitude]}
-                icon={customIcon}
-                eventHandlers={{ click: () => setSelectedJob(job) }}>
-                <Popup>
-                  <div className="p-2">
-                    <h3 className="font-semibold text-sm mb-1">{job.title}</h3>
-                    <p className="text-xs text-muted-foreground mb-2">{job.location_name}</p>
-                    <div className="flex items-center gap-2 text-xs">
-                      <span className="font-semibold text-success">${job.pay_per_day}/day</span>
-                      <span>•</span>
-                      <span>{job.duration_days} days</span>
-                    </div>
-                  </div>
-                </Popup>
-              </Marker>
-            ))}
-            {selectedJob && <RecenterMap lat={selectedJob.latitude} lng={selectedJob.longitude} />}
-          </Fragment>
+          <MapContent jobs={jobs} selectedJob={selectedJob} setSelectedJob={setSelectedJob} />
         </MapContainer>
       </div>
 

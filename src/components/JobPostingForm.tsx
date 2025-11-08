@@ -35,6 +35,23 @@ function LocationMarker({ position, setPosition }: LocationMarkerProps) {
   return position ? <Marker position={position} icon={customIcon} /> : null;
 }
 
+interface MapPickerContentProps {
+  position: [number, number] | null;
+  setPosition: (pos: [number, number]) => void;
+}
+
+function MapPickerContent({ position, setPosition }: MapPickerContentProps) {
+  return (
+    <>
+      <TileLayer
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      <LocationMarker position={position} setPosition={setPosition} />
+    </>
+  );
+}
+
 export const JobPostingForm = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -310,13 +327,7 @@ export const JobPostingForm = () => {
               center={position || [41.3275, 19.8187]}
               zoom={position ? 13 : 8}
               className="h-full w-full">
-              <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              <Fragment>
-                <LocationMarker position={position} setPosition={setPosition} />
-              </Fragment>
+              <MapPickerContent position={position} setPosition={setPosition} />
             </MapContainer>
           </div>
 
