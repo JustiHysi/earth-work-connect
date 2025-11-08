@@ -26,17 +26,17 @@ export const ChatbotWidget = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
-  // Hide chatbot on auth, dashboard, and profile pages
-  const hiddenRoutes = ['/auth', '/dashboard', '/profile'];
-  if (hiddenRoutes.includes(location.pathname)) {
-    return null;
-  }
-
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages]);
+
+  // Hide chatbot on auth, dashboard, and profile pages
+  const hiddenRoutes = ['/auth', '/dashboard', '/profile'];
+  if (hiddenRoutes.includes(location.pathname)) {
+    return null;
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
