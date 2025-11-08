@@ -306,15 +306,8 @@ export const JobPostingForm = () => {
           </div>
 
           <div className="h-[400px] rounded-lg overflow-hidden border">
-            <MapContainer
-              center={position || [41.3275, 19.8187]}
-              zoom={position ? 13 : 8}
-              className="h-full w-full"
-            >
-              <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
+            <MapContainer center={position || [41.3275, 19.8187]} zoom={position ? 13 : 8} className="h-full w-full">
+              <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
               <LocationMarker position={position} setPosition={setPosition} />
             </MapContainer>
           </div>
