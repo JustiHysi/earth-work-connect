@@ -1,7 +1,4 @@
-import { useEffect, useState, Fragment } from "react";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
-import { Icon } from "leaflet";
-import "leaflet/dist/leaflet.css";
+import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -22,67 +19,11 @@ interface Job {
   description: string;
 }
 
-const customIcon = new Icon({
-  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-  shadowSize: [41, 41],
-});
-
 const urgencyColors: Record<string, string> = {
   high: "bg-destructive",
   medium: "bg-accent",
   low: "bg-success"
 };
-
-function RecenterMap({ lat, lng }: { lat: number; lng: number }) {
-  const map = useMap();
-  
-  useEffect(() => {
-    map.setView([lat, lng], map.getZoom());
-  }, [lat, lng, map]);
-  
-  return null;
-}
-
-interface MapContentProps {
-  jobs: Job[];
-  selectedJob: Job | null;
-  setSelectedJob: (job: Job | null) => void;
-}
-
-function MapContent({ jobs, selectedJob, setSelectedJob }: MapContentProps) {
-  return (
-    <>
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
-      {jobs.map((job) => (
-        <Marker
-          key={job.id}
-          position={[job.latitude, job.longitude]}
-          icon={customIcon}
-          eventHandlers={{ click: () => setSelectedJob(job) }}>
-          <Popup>
-            <div className="p-2">
-              <h3 className="font-semibold text-sm mb-1">{job.title}</h3>
-              <p className="text-xs text-muted-foreground mb-2">{job.location_name}</p>
-              <div className="flex items-center gap-2 text-xs">
-                <span className="font-semibold text-success">${job.pay_per_day}/day</span>
-                <span>•</span>
-                <span>{job.duration_days} days</span>
-              </div>
-            </div>
-          </Popup>
-        </Marker>
-      ))}
-      {selectedJob && <RecenterMap lat={selectedJob.latitude} lng={selectedJob.longitude} />}
-    </>
-  );
-}
 
 export const InteractiveMap = () => {
   const [jobs, setJobs] = useState<Job[]>([]);
@@ -123,13 +64,19 @@ export const InteractiveMap = () => {
   return (
     <div className="grid lg:grid-cols-3 gap-6">
       <div className="lg:col-span-2">
-        <MapContainer
-          center={[20, 0]}
-          zoom={2}
-          className="w-full h-[600px] rounded-lg shadow-lg z-0"
-          scrollWheelZoom={true}>
-          <MapContent jobs={jobs} selectedJob={selectedJob} setSelectedJob={setSelectedJob} />
-        </MapContainer>
+        <div className="w-full h-[600px] bg-muted rounded-lg shadow-lg flex items-center justify-center relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5"></div>
+          <div className="text-center z-10 p-8">
+            <MapPin className="h-16 w-16 text-primary mx-auto mb-4" />
+            <h3 className="text-2xl font-bold text-foreground mb-2">Interactive Map</h3>
+            <p className="text-muted-foreground mb-4">
+              View {jobs.length} environmental jobs across the globe
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Map functionality will be available soon with advanced filtering and clustering
+            </p>
+          </div>
+        </div>
       </div>
 
       <div className="lg:col-span-1">
@@ -186,10 +133,23 @@ export const InteractiveMap = () => {
           <Card className="p-6 sticky top-4">
             <div className="text-center py-12">
               <MapPin className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-foreground mb-2">Select a Job</h3>
-              <p className="text-sm text-muted-foreground">
-                Click on any marker on the map to view job details
+              <h3 className="text-lg font-semibold text-foreground mb-2">Browse Jobs</h3>
+              <p className="text-sm text-muted-foreground mb-4">
+                {jobs.length} environmental micro-jobs available
               </p>
+              <div className="space-y-2">
+                {jobs.slice(0, 5).map((job) => (
+                  <Button
+                    key={job.id}
+                    variant="outline"
+                    className="w-full justify-start"
+                    onClick={() => setSelectedJob(job)}
+                  >
+                    <MapPin className="h-4 w-4 mr-2" />
+                    <span className="truncate">{job.title}</span>
+                  </Button>
+                ))}
+              </div>
             </div>
           </Card>
         )}

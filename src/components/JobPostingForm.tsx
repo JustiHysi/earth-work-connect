@@ -1,8 +1,5 @@
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
-import { Icon } from "leaflet";
-import "leaflet/dist/leaflet.css";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -13,50 +10,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "sonner";
 import { MapPin, Upload, Calculator, Loader2 } from "lucide-react";
 
-const customIcon = new Icon({
-  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-});
-
-interface LocationMarkerProps {
-  position: [number, number] | null;
-  setPosition: (pos: [number, number]) => void;
-}
-
-function LocationMarker({ position, setPosition }: LocationMarkerProps) {
-  useMapEvents({
-    click(e) {
-      setPosition([e.latlng.lat, e.latlng.lng]);
-    },
-  });
-
-  return position ? <Marker position={position} icon={customIcon} /> : null;
-}
-
-interface MapPickerContentProps {
-  position: [number, number] | null;
-  setPosition: (pos: [number, number]) => void;
-}
-
-function MapPickerContent({ position, setPosition }: MapPickerContentProps) {
-  return (
-    <>
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
-      <LocationMarker position={position} setPosition={setPosition} />
-    </>
-  );
-}
-
 export const JobPostingForm = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const [position, setPosition] = useState<[number, number] | null>(null);
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
   
   const [formData, setFormData] = useState({
     title: "",
@@ -83,15 +42,15 @@ export const JobPostingForm = () => {
     switch (formData.category) {
       case "reforestation":
         setImpactMetrics({
-          trees_planted: days * 50, // 50 trees per day
-          co2_offset_kg: days * 50 * 21.77, // Each tree offsets ~21.77kg CO2/year
+          trees_planted: days * 50,
+          co2_offset_kg: days * 50 * 21.77,
           area_covered_sqm: days * 100,
         });
         break;
       case "clean_energy":
         setImpactMetrics({
           trees_planted: 0,
-          co2_offset_kg: days * 150, // 150kg CO2 saved per day
+          co2_offset_kg: days * 150,
           area_covered_sqm: days * 50,
         });
         break;
@@ -142,7 +101,7 @@ export const JobPostingForm = () => {
       const fileExt = file.name.split('.').pop();
       const fileName = `${user.id}/${Date.now()}.${fileExt}`;
 
-      const { error: uploadError, data } = await supabase.storage
+      const { error: uploadError } = await supabase.storage
         .from('job-photos')
         .upload(fileName, file);
 
@@ -164,8 +123,8 @@ export const JobPostingForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!position) {
-      toast.error("Please select a location on the map");
+    if (!latitude || !longitude) {
+      toast.error("Please enter job coordinates");
       return;
     }
 
@@ -180,8 +139,8 @@ export const JobPostingForm = () => {
         title: formData.title,
         description: formData.description,
         location_name: formData.location_name,
-        latitude: position[0],
-        longitude: position[1],
+        latitude: parseFloat(latitude),
+        longitude: parseFloat(longitude),
         category: formData.category as any,
         urgency: formData.urgency as any,
         pay_per_day: parseFloat(formData.pay_per_day),
@@ -306,9 +265,9 @@ export const JobPostingForm = () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <MapPin className="h-5 w-5" />
-            Location Picker
+            Location Details
           </CardTitle>
-          <CardDescription>Click on the map to set the job location</CardDescription>
+          <CardDescription>Enter the location name and coordinates</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
@@ -322,20 +281,37 @@ export const JobPostingForm = () => {
             />
           </div>
 
-          <div className="h-[400px] rounded-lg overflow-hidden border">
-            <MapContainer
-              center={position || [41.3275, 19.8187]}
-              zoom={position ? 13 : 8}
-              className="h-full w-full">
-              <MapPickerContent position={position} setPosition={setPosition} />
-            </MapContainer>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="latitude">Latitude</Label>
+              <Input
+                id="latitude"
+                type="number"
+                step="any"
+                placeholder="e.g., 41.3275"
+                value={latitude}
+                onChange={(e) => setLatitude(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="longitude">Longitude</Label>
+              <Input
+                id="longitude"
+                type="number"
+                step="any"
+                placeholder="e.g., 19.8187"
+                value={longitude}
+                onChange={(e) => setLongitude(e.target.value)}
+                required
+              />
+            </div>
           </div>
 
-          {position && (
-            <p className="text-sm text-muted-foreground">
-              Selected: {position[0].toFixed(4)}, {position[1].toFixed(4)}
-            </p>
-          )}
+          <p className="text-sm text-muted-foreground">
+            Tip: Use Google Maps to find coordinates - right-click on a location and copy the coordinates
+          </p>
         </CardContent>
       </Card>
 
