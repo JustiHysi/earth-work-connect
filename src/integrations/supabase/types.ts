@@ -107,6 +107,7 @@ export type Database = {
           location_name: string
           longitude: number
           pay_per_day: number
+          photo_url: string | null
           status: Database["public"]["Enums"]["job_status"]
           title: string
           updated_at: string
@@ -124,6 +125,7 @@ export type Database = {
           location_name: string
           longitude: number
           pay_per_day: number
+          photo_url?: string | null
           status?: Database["public"]["Enums"]["job_status"]
           title: string
           updated_at?: string
@@ -141,6 +143,7 @@ export type Database = {
           location_name?: string
           longitude?: number
           pay_per_day?: number
+          photo_url?: string | null
           status?: Database["public"]["Enums"]["job_status"]
           title?: string
           updated_at?: string
