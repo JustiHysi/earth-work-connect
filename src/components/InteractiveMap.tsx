@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { MapPin, DollarSign, Clock, TreePine, ArrowLeft, ChevronDown } from "lucide-react";
+import { JobApplicationModal } from "./JobApplicationModal";
 
 interface Job {
   id: string;
@@ -33,6 +34,7 @@ export const InteractiveMap = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [startY, setStartY] = useState(0);
   const [currentHeight, setCurrentHeight] = useState(600);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -56,6 +58,10 @@ export const InteractiveMap = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleApplyClick = () => {
+    setIsModalOpen(true);
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -184,7 +190,7 @@ export const InteractiveMap = () => {
                     </div>
                   </div>
 
-                  <Button className="w-full" size="lg">
+                  <Button className="w-full" size="lg" onClick={handleApplyClick}>
                     Apply for Job
                   </Button>
                 </div>
@@ -224,6 +230,12 @@ export const InteractiveMap = () => {
           </Card>
         </div>
       </div>
+
+      <JobApplicationModal
+        open={isModalOpen}
+        onOpenChange={setIsModalOpen}
+        jobTitle={selectedJob?.title || ""}
+      />
     </div>
   );
 };
