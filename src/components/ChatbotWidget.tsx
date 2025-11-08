@@ -32,8 +32,8 @@ export const ChatbotWidget = () => {
     }
   }, [messages]);
 
-  // Hide chatbot on auth, dashboard, and profile pages
-  const hiddenRoutes = ['/auth', '/dashboard', '/profile'];
+  // Hide chatbot only on auth/login page
+  const hiddenRoutes = ['/auth'];
   if (hiddenRoutes.includes(location.pathname)) {
     return null;
   }
