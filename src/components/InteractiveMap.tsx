@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { MapPin, DollarSign, Clock, TreePine } from "lucide-react";
+import { MapPin, DollarSign, Clock, TreePine, ArrowLeft, ChevronDown } from "lucide-react";
 
 interface Job {
   id: string;
@@ -29,9 +29,17 @@ export const InteractiveMap = () => {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [loading, setLoading] = useState(true);
+  const [panelHeight, setPanelHeight] = useState<number>(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startY, setStartY] = useState(0);
+  const [currentHeight, setCurrentHeight] = useState(600);
+  const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetchJobs();
+    if (panelRef.current) {
+      setPanelHeight(panelRef.current.offsetHeight);
+    }
   }, []);
 
   const fetchJobs = async () => {
@@ -49,6 +57,33 @@ export const InteractiveMap = () => {
       setLoading(false);
     }
   };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    setStartY(e.clientY);
+  };
+
+  const handleMouseMove = (e: MouseEvent) => {
+    if (!isDragging) return;
+    const deltaY = e.clientY - startY;
+    const newHeight = Math.max(200, Math.min(600, currentHeight - deltaY));
+    setCurrentHeight(newHeight);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  useEffect(() => {
+    if (isDragging) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+      return () => {
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
+      };
+    }
+  }, [isDragging, startY, currentHeight]);
 
   if (loading) {
     return (
@@ -79,80 +114,115 @@ export const InteractiveMap = () => {
         </div>
       </div>
 
-      <div className="lg:col-span-1">
-        {selectedJob ? (
-          <Card className="p-6 sticky top-4">
-            <div className="flex items-start justify-between mb-4">
-              <h3 className="text-xl font-bold text-foreground">{selectedJob.title}</h3>
-              <Badge className={urgencyColors[selectedJob.urgency]}>
-                {selectedJob.urgency}
-              </Badge>
-            </div>
+      <div className="lg:col-span-1" ref={panelRef}>
+        <div className="sticky top-4">
+          {/* Drag Handle */}
+          <div
+            onMouseDown={handleMouseDown}
+            className="bg-muted hover:bg-muted/80 rounded-t-lg p-2 cursor-ns-resize flex items-center justify-center border border-border"
+          >
+            <ChevronDown className="h-5 w-5 text-muted-foreground" />
+          </div>
 
-            <div className="space-y-4">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <MapPin className="h-4 w-4" />
-                <span className="text-sm">{selectedJob.location_name}</span>
-              </div>
-
-              <p className="text-sm text-muted-foreground">{selectedJob.description}</p>
-
-              <div className="grid grid-cols-2 gap-4 pt-4 border-t">
-                <div className="flex items-center gap-2">
-                  <DollarSign className="h-4 w-4 text-success" />
-                  <div>
-                    <div className="text-sm font-semibold">${selectedJob.pay_per_day}/day</div>
-                    <div className="text-xs text-muted-foreground">Pay Rate</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-primary" />
-                  <div>
-                    <div className="text-sm font-semibold">{selectedJob.duration_days} days</div>
-                    <div className="text-xs text-muted-foreground">Duration</div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="pt-4 border-t">
-                <div className="flex items-start gap-2 mb-2">
-                  <TreePine className="h-4 w-4 text-primary mt-1" />
-                  <div>
-                    <div className="text-sm font-semibold text-foreground">Impact</div>
-                    <div className="text-sm text-muted-foreground">{selectedJob.impact_description}</div>
-                  </div>
-                </div>
-              </div>
-
-              <Button className="w-full" size="lg">
-                Apply for Job
-              </Button>
-            </div>
-          </Card>
-        ) : (
-          <Card className="p-6 sticky top-4">
-            <div className="text-center py-12">
-              <MapPin className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-foreground mb-2">Browse Jobs</h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                {jobs.length} environmental micro-jobs available
-              </p>
-              <div className="space-y-2">
-                {jobs.slice(0, 5).map((job) => (
+          {/* Panel Content */}
+          <Card 
+            className="rounded-t-none overflow-auto transition-all" 
+            style={{ maxHeight: `${currentHeight}px` }}
+          >
+            {selectedJob ? (
+              <div className="p-6">
+                <div className="flex items-center gap-2 mb-4">
                   <Button
-                    key={job.id}
-                    variant="outline"
-                    className="w-full justify-start"
-                    onClick={() => setSelectedJob(job)}
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setSelectedJob(null)}
                   >
-                    <MapPin className="h-4 w-4 mr-2" />
-                    <span className="truncate">{job.title}</span>
+                    <ArrowLeft className="h-4 w-4 mr-2" />
+                    Back to Jobs
                   </Button>
-                ))}
+                </div>
+
+                <div className="flex items-start justify-between mb-4">
+                  <h3 className="text-xl font-bold text-foreground">{selectedJob.title}</h3>
+                  <Badge className={urgencyColors[selectedJob.urgency]}>
+                    {selectedJob.urgency}
+                  </Badge>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <MapPin className="h-4 w-4" />
+                    <span className="text-sm">{selectedJob.location_name}</span>
+                  </div>
+
+                  <p className="text-sm text-muted-foreground">{selectedJob.description}</p>
+
+                  <div className="grid grid-cols-2 gap-4 pt-4 border-t">
+                    <div className="flex items-center gap-2">
+                      <DollarSign className="h-4 w-4 text-success" />
+                      <div>
+                        <div className="text-sm font-semibold">${selectedJob.pay_per_day}/day</div>
+                        <div className="text-xs text-muted-foreground">Pay Rate</div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Clock className="h-4 w-4 text-primary" />
+                      <div>
+                        <div className="text-sm font-semibold">{selectedJob.duration_days} days</div>
+                        <div className="text-xs text-muted-foreground">Duration</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-4 border-t">
+                    <div className="flex items-start gap-2 mb-2">
+                      <TreePine className="h-4 w-4 text-primary mt-1" />
+                      <div>
+                        <div className="text-sm font-semibold text-foreground">Impact</div>
+                        <div className="text-sm text-muted-foreground">{selectedJob.impact_description}</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Button className="w-full" size="lg">
+                    Apply for Job
+                  </Button>
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="p-6">
+                <div className="text-center mb-6">
+                  <MapPin className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold text-foreground mb-2">Browse Jobs</h3>
+                  <p className="text-sm text-muted-foreground">
+                    {jobs.length} environmental micro-jobs available
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  {jobs.map((job) => (
+                    <Button
+                      key={job.id}
+                      variant="outline"
+                      className="w-full justify-start text-left"
+                      onClick={() => setSelectedJob(job)}
+                    >
+                      <div className="flex items-center gap-2 flex-1 min-w-0">
+                        <MapPin className="h-4 w-4 flex-shrink-0" />
+                        <div className="flex-1 min-w-0">
+                          <div className="truncate font-medium">{job.title}</div>
+                          <div className="text-xs text-muted-foreground truncate">{job.location_name}</div>
+                        </div>
+                        <Badge className={`${urgencyColors[job.urgency]} flex-shrink-0`} variant="secondary">
+                          ${job.pay_per_day}/day
+                        </Badge>
+                      </div>
+                    </Button>
+                  ))}
+                </div>
+              </div>
+            )}
           </Card>
-        )}
+        </div>
       </div>
     </div>
   );
