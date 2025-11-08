@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Globe, Loader2 } from "lucide-react";
+import { Globe, Loader2, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 
 export default function Auth() {
@@ -100,6 +100,18 @@ export default function Auth() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
+        <Button
+          variant="ghost"
+          onClick={() => {
+            navigate("/");
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className="mb-4"
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Return to Main
+        </Button>
+
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-2 mb-4">
             <Globe className="h-10 w-10 text-primary" />
