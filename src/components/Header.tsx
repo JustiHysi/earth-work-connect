@@ -49,17 +49,9 @@ export const Header = () => {
   };
 
   const NavLinks = () => {
-    const handleBrowseJobs = () => {
-      navigate("/");
-      setTimeout(() => {
-        const jobsSection = document.getElementById("jobs");
-        jobsSection?.scrollIntoView({ behavior: "smooth" });
-      }, 100);
-    };
-
     return (
       <>
-        <button onClick={handleBrowseJobs} className="text-foreground hover:text-primary transition-colors font-medium">
+        <button onClick={() => navigate("/jobs")} className="text-foreground hover:text-primary transition-colors font-medium">
           {t('nav.browseJobs')}
         </button>
         <button onClick={() => navigate("/impact")} className="text-foreground hover:text-primary transition-colors font-medium">

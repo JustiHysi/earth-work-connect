@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
+import Jobs from "./pages/Jobs";
 import MapView from "./pages/MapView";
 import PostJob from "./pages/PostJob";
 import Impact from "./pages/Impact";
@@ -29,6 +30,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/jobs" element={<Jobs />} />
           <Route path="/map" element={<MapView />} />
           <Route path="/post-job" element={<PostJob />} />
           <Route path="/impact" element={<Impact />} />
