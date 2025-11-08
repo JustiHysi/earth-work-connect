@@ -9,18 +9,27 @@
     "admin": "Admin"
   },
   "hero": {
-    "title": "Work<span>4</span>Earth",
-    "subtitle": "Turning awareness into action, and data into dignity.",
-    "description": "Connect with verified eco-jobs that empower you to earn income while protecting our planet",
-    "exploreMap": "Explore Jobs on Map",
-    "browseJobs": "Browse All Jobs"
+    "badge": "Connecting Communities to Climate Action",
+    "title1": "Earn Income.",
+    "title2": "Restore the Planet.",
+    "description": "Join thousands earning through verified environmental micro-jobs—from tree planting to solar maintenance. Transform climate vulnerability into opportunity.",
+    "findJobs": "Find Jobs Near You",
+    "learnMore": "Learn More"
   },
   "jobs": {
-    "title": "Available Environmental Jobs",
-    "subtitle": "Make an impact while earning income",
+    "title": "Browse Environmental Jobs",
+    "subtitle": "Find meaningful micro-jobs that make a real environmental impact",
+    "availableTitle": "Available Micro-Jobs",
+    "availableSubtitle": "Find verified environmental opportunities near you. Every job makes a measurable impact.",
+    "searchPlaceholder": "Search jobs or locations...",
+    "allCategories": "All",
     "perDay": "/day",
     "days": "days",
     "apply": "Apply Now",
+    "loading": "Loading jobs...",
+    "noJobs": "No jobs found matching your search. Try adjusting your filters.",
+    "priority": "priority",
+    "impact": "Impact",
     "high": "high",
     "medium": "medium",
     "low": "low"
@@ -64,7 +73,10 @@
     "worker": "Worker",
     "ngo": "NGO / Organization",
     "signingIn": "Signing in...",
-    "creatingAccount": "Creating account..."
+    "creatingAccount": "Creating account...",
+    "returnToMain": "Return to Main",
+    "accountCreated": "Account created successfully!",
+    "signedIn": "Signed in successfully!"
   },
   "map": {
     "title": "Explore Jobs on Map",
@@ -170,10 +182,62 @@
   },
   "footer": {
     "tagline": "Empowering communities through environmental action",
+    "quickLinks": "Quick Links",
+    "legal": "Legal",
     "about": "About",
     "contact": "Contact",
     "terms": "Terms",
     "privacy": "Privacy",
     "rights": "© 2025 Work4Earth. All rights reserved."
+  },
+  "userRoles": {
+    "title": "Join as...",
+    "subtitle": "Whether you want to volunteer, earn income, or create opportunities—there's a place for you.",
+    "volunteer": {
+      "title": "Volunteer",
+      "description": "Contribute your time to environmental causes. Perfect for students and community members.",
+      "feature1": "Browse all jobs",
+      "feature2": "Track your impact",
+      "feature3": "Earn certificates",
+      "feature4": "Join community events",
+      "cta": "Start Volunteering"
+    },
+    "worker": {
+      "title": "Worker",
+      "description": "Earn income through verified micro-jobs while supporting climate resilience.",
+      "feature1": "Get paid for work",
+      "feature2": "Flexible scheduling",
+      "feature3": "Skill development",
+      "feature4": "Income tracking",
+      "cta": "Become a Worker"
+    },
+    "ngo": {
+      "title": "NGO / Organization",
+      "description": "Post jobs, manage projects, and connect with motivated workers in your region.",
+      "feature1": "Post unlimited jobs",
+      "feature2": "Worker management",
+      "feature3": "Impact reporting",
+      "feature4": "Priority support",
+      "cta": "Register Organization"
+    }
+  },
+  "application": {
+    "title": "Apply for Position",
+    "subtitle": "Submit your application for:",
+    "name": "Full Name",
+    "namePlaceholder": "John Doe",
+    "email": "Email",
+    "emailPlaceholder": "john@example.com",
+    "phone": "Phone Number",
+    "phonePlaceholder": "+1 (555) 123-4567",
+    "description": "Why are you interested in this position?",
+    "descriptionPlaceholder": "Tell us about your interest and relevant experience...",
+    "cancel": "Cancel",
+    "submit": "Submit Application",
+    "submitting": "Submitting...",
+    "success": "Application Submitted!",
+    "successMessage": "has been received. We'll contact you soon.",
+    "error": "Error",
+    "errorMessage": "Failed to submit application. Please try again."
   }
 }

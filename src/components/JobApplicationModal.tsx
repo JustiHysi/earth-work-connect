@@ -2,6 +2,9 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { useTranslation } from "react-i18next";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import {
   Dialog,
   DialogContent,
@@ -59,6 +62,7 @@ export const JobApplicationModal = ({
   onOpenChange,
   jobTitle,
 }: JobApplicationModalProps) => {
+  const { t } = useTranslation();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
@@ -79,8 +83,8 @@ export const JobApplicationModal = ({
       console.log("Application submitted:", { ...values, jobTitle });
       
       toast({
-        title: "Application Submitted!",
-        description: `Your application for "${jobTitle}" has been received. We'll contact you soon.`,
+        title: t('application.success'),
+        description: `${t('application.successMessage').replace('has been received', jobTitle + ' ' + t('application.successMessage'))}`,
       });
 
       form.reset();

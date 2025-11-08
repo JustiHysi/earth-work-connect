@@ -9,18 +9,27 @@
     "admin": "Admin"
   },
   "hero": {
-    "title": "Travail<span>4</span>Terre",
-    "subtitle": "Transformer la sensibilisation en action et les données en dignité.",
-    "description": "Connectez-vous avec des emplois éco vérifiés qui vous permettent de gagner un revenu tout en protégeant notre planète",
-    "exploreMap": "Explorer les Emplois sur la Carte",
-    "browseJobs": "Parcourir Tous les Emplois"
+    "badge": "Connecter les Communautés à l'Action Climatique",
+    "title1": "Gagner un Revenu.",
+    "title2": "Restaurer la Planète.",
+    "description": "Rejoignez des milliers de personnes qui gagnent leur vie grâce à des micro-emplois environnementaux vérifiés—de la plantation d'arbres à l'entretien solaire. Transformez la vulnérabilité climatique en opportunité.",
+    "findJobs": "Trouver des Emplois Près de Vous",
+    "learnMore": "En Savoir Plus"
   },
   "jobs": {
-    "title": "Emplois Environnementaux Disponibles",
-    "subtitle": "Avoir un impact tout en gagnant un revenu",
+    "title": "Parcourir les Emplois Environnementaux",
+    "subtitle": "Trouvez des micro-emplois significatifs qui ont un réel impact environnemental",
+    "availableTitle": "Micro-Emplois Disponibles",
+    "availableSubtitle": "Trouvez des opportunités environnementales vérifiées près de chez vous. Chaque emploi a un impact mesurable.",
+    "searchPlaceholder": "Rechercher des emplois ou des lieux...",
+    "allCategories": "Tous",
     "perDay": "/jour",
     "days": "jours",
     "apply": "Postuler Maintenant",
+    "loading": "Chargement des emplois...",
+    "noJobs": "Aucun emploi trouvé correspondant à votre recherche. Essayez d'ajuster vos filtres.",
+    "priority": "priorité",
+    "impact": "Impact",
     "high": "élevée",
     "medium": "moyenne",
     "low": "faible"
@@ -64,7 +73,10 @@
     "worker": "Travailleur",
     "ngo": "ONG / Organisation",
     "signingIn": "Connexion...",
-    "creatingAccount": "Création du compte..."
+    "creatingAccount": "Création du compte...",
+    "returnToMain": "Retour à l'Accueil",
+    "accountCreated": "Compte créé avec succès!",
+    "signedIn": "Connecté avec succès!"
   },
   "map": {
     "title": "Explorer les Emplois sur la Carte",
@@ -170,10 +182,62 @@
   },
   "footer": {
     "tagline": "Autonomiser les communautés par l'action environnementale",
+    "quickLinks": "Liens Rapides",
+    "legal": "Légal",
     "about": "À Propos",
     "contact": "Contact",
     "terms": "Conditions",
     "privacy": "Confidentialité",
     "rights": "© 2025 Work4Earth. Tous droits réservés."
+  },
+  "userRoles": {
+    "title": "Rejoignez en tant que...",
+    "subtitle": "Que vous souhaitiez faire du bénévolat, gagner un revenu ou créer des opportunités—il y a une place pour vous.",
+    "volunteer": {
+      "title": "Bénévole",
+      "description": "Contribuez votre temps aux causes environnementales. Parfait pour les étudiants et les membres de la communauté.",
+      "feature1": "Parcourir tous les emplois",
+      "feature2": "Suivre votre impact",
+      "feature3": "Gagner des certificats",
+      "feature4": "Rejoindre des événements communautaires",
+      "cta": "Commencer le Bénévolat"
+    },
+    "worker": {
+      "title": "Travailleur",
+      "description": "Gagnez un revenu grâce à des micro-emplois vérifiés tout en soutenant la résilience climatique.",
+      "feature1": "Être payé pour le travail",
+      "feature2": "Planification flexible",
+      "feature3": "Développement des compétences",
+      "feature4": "Suivi des revenus",
+      "cta": "Devenir Travailleur"
+    },
+    "ngo": {
+      "title": "ONG / Organisation",
+      "description": "Publiez des emplois, gérez des projets et connectez-vous avec des travailleurs motivés dans votre région.",
+      "feature1": "Publier des emplois illimités",
+      "feature2": "Gestion des travailleurs",
+      "feature3": "Rapport d'impact",
+      "feature4": "Support prioritaire",
+      "cta": "Enregistrer l'Organisation"
+    }
+  },
+  "application": {
+    "title": "Postuler pour le Poste",
+    "subtitle": "Soumettez votre candidature pour:",
+    "name": "Nom Complet",
+    "namePlaceholder": "Jean Dupont",
+    "email": "Email",
+    "emailPlaceholder": "jean@exemple.com",
+    "phone": "Numéro de Téléphone",
+    "phonePlaceholder": "+33 1 23 45 67 89",
+    "description": "Pourquoi êtes-vous intéressé par ce poste?",
+    "descriptionPlaceholder": "Parlez-nous de votre intérêt et de votre expérience pertinente...",
+    "cancel": "Annuler",
+    "submit": "Soumettre la Candidature",
+    "submitting": "Envoi...",
+    "success": "Candidature Soumise!",
+    "successMessage": "a été reçue. Nous vous contacterons bientôt.",
+    "error": "Erreur",
+    "errorMessage": "Échec de la soumission de la candidature. Veuillez réessayer."
   }
 }

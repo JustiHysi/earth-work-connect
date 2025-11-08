@@ -109,7 +109,7 @@ export default function Auth() {
           className="mb-4"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Return to Main
+          {t('auth.returnToMain')}
         </Button>
 
         <div className="text-center mb-8">

@@ -26,7 +26,7 @@ export const Footer = () => {
           </div>
           
           <div>
-            <h4 className="font-semibold mb-4">Quick Links</h4>
+            <h4 className="font-semibold mb-4">{t('footer.quickLinks')}</h4>
             <ul className="space-y-2 text-muted-foreground">
               <li>
                 <button 
@@ -64,7 +64,7 @@ export const Footer = () => {
           </div>
           
           <div>
-            <h4 className="font-semibold mb-4">Legal</h4>
+            <h4 className="font-semibold mb-4">{t('footer.legal')}</h4>
             <ul className="space-y-2 text-muted-foreground">
               <li><button onClick={() => handleNavigation("/privacy")} className="hover:text-primary transition-colors">{t('footer.privacy')}</button></li>
               <li><button onClick={() => handleNavigation("/terms")} className="hover:text-primary transition-colors">{t('footer.terms')}</button></li>

@@ -1,8 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, MapPin, Sprout } from "lucide-react";
 import heroBanner from "@/assets/hero-banner.jpg";
+import { useTranslation } from "react-i18next";
 
 export const Hero = () => {
+  const { t } = useTranslation();
+  
   return (
     <section className="relative min-h-[600px] flex items-center overflow-hidden">
       {/* Background Image with Overlay */}
@@ -21,19 +24,18 @@ export const Hero = () => {
           <div className="inline-flex items-center gap-2 bg-primary-foreground/20 backdrop-blur-sm px-4 py-2 rounded-full mb-6 border border-primary-foreground/30">
             <Sprout className="h-4 w-4 text-primary-foreground" />
             <span className="text-sm font-medium text-primary-foreground">
-              Connecting Communities to Climate Action
+              {t('hero.badge')}
             </span>
           </div>
 
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-primary-foreground mb-6 leading-tight">
-            Earn Income.
+            {t('hero.title1')}
             <br />
-            <span className="text-secondary-foreground">Restore the Planet.</span>
+            <span className="text-secondary-foreground">{t('hero.title2')}</span>
           </h1>
 
           <p className="text-xl md:text-2xl text-primary-foreground/90 mb-8 leading-relaxed">
-            Join thousands earning through verified environmental micro-jobs—from tree planting
-            to solar maintenance. Transform climate vulnerability into opportunity.
+            {t('hero.description')}
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4">
@@ -44,7 +46,7 @@ export const Hero = () => {
               onClick={() => window.location.href = '/map'}
             >
               <MapPin className="mr-2 h-5 w-5" />
-              Find Jobs Near You
+              {t('hero.findJobs')}
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
             <Button
@@ -53,7 +55,7 @@ export const Hero = () => {
               className="text-lg h-14 px-8 bg-primary-foreground/10 backdrop-blur-sm border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/20"
               onClick={() => window.location.href = '#about'}
             >
-              Learn More
+              {t('hero.learnMore')}
             </Button>
           </div>
         </div>

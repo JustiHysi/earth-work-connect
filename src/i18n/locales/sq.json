@@ -9,18 +9,27 @@
     "admin": "Administratori"
   },
   "hero": {
-    "title": "Puno<span>4</span>Tokë",
-    "subtitle": "Duke kthyer ndërgjegjësimin në veprim dhe të dhënat në dinjitet.",
-    "description": "Lidhuni me punë eko të verifikuara që ju fuqizojnë të fitoni të ardhura duke mbrojtur planetin tonë",
-    "exploreMap": "Eksploroni Punët në Hartë",
-    "browseJobs": "Shfletoni të Gjitha Punët"
+    "badge": "Duke Lidhur Komunitetet me Veprimin Klimatik",
+    "title1": "Fitoni të Ardhura.",
+    "title2": "Restauroni Planetin.",
+    "description": "Bashkohuni me mijëra të tjerë që fitojnë përmes mikro-punëve mjedisore të verifikuara—nga mbjelljaç e pemëve deri te mirëmbajtja diellore. Transformoni cënueshmërinë klimatike në mundësi.",
+    "findJobs": "Gjeni Punë Pranë Jush",
+    "learnMore": "Mësoni Më Shumë"
   },
   "jobs": {
-    "title": "Punë Mjedisore në Dispozicion",
-    "subtitle": "Bëni ndikim duke fituar të ardhura",
+    "title": "Shfletoni Punët Mjedisore",
+    "subtitle": "Gjeni mikro-punë me kuptim që bëjnë ndikim real mjedisor",
+    "availableTitle": "Mikro-Punë në Dispozicion",
+    "availableSubtitle": "Gjeni mundësi mjedisore të verifikuara pranë jush. Çdo punë bën një ndikim të matshëm.",
+    "searchPlaceholder": "Kërkoni punë ose vendndodhje...",
+    "allCategories": "Të Gjitha",
     "perDay": "/ditë",
     "days": "ditë",
     "apply": "Aplikoni Tani",
+    "loading": "Duke ngarkuar punët...",
+    "noJobs": "Nuk u gjetën punë që përputhen me kërkimin tuaj. Provoni të rregulloni filtrat tuaj.",
+    "priority": "prioritet",
+    "impact": "Ndikimi",
     "high": "e lartë",
     "medium": "mesatare",
     "low": "e ulët"
@@ -64,7 +73,10 @@
     "worker": "Punëtor",
     "ngo": "OJQ / Organizatë",
     "signingIn": "Duke u futur...",
-    "creatingAccount": "Duke krijuar llogarinë..."
+    "creatingAccount": "Duke krijuar llogarinë...",
+    "returnToMain": "Kthehuni në Kryesore",
+    "accountCreated": "Llogaria u krijua me sukses!",
+    "signedIn": "U futët me sukses!"
   },
   "map": {
     "title": "Eksploroni Punët në Hartë",
@@ -170,10 +182,62 @@
   },
   "footer": {
     "tagline": "Fuqizimi i komuniteteve përmes veprimit mjedisor",
+    "quickLinks": "Lidhje të Shpejta",
+    "legal": "Ligjore",
     "about": "Rreth Nesh",
     "contact": "Kontakti",
     "terms": "Kushtet",
     "privacy": "Privatësia",
     "rights": "© 2025 Work4Earth. Të gjitha të drejtat e rezervuara."
+  },
+  "userRoles": {
+    "title": "Bashkohuni si...",
+    "subtitle": "Qoftë që dëshironi të bëheni vullnetar, të fitoni të ardhura, ose të krijoni mundësi—ka një vend për ju.",
+    "volunteer": {
+      "title": "Vullnetar",
+      "description": "Kontribuoni kohën tuaj për kauzat mjedisore. Perfekt për studentët dhe anëtarët e komunitetit.",
+      "feature1": "Shfletoni të gjitha punët",
+      "feature2": "Gjurmoni ndikimin tuaj",
+      "feature3": "Fitoni çertifikata",
+      "feature4": "Bashkohuni me ngjarjet e komunitetit",
+      "cta": "Filloni Vullnetarizmin"
+    },
+    "worker": {
+      "title": "Punëtor",
+      "description": "Fitoni të ardhura përmes mikro-punëve të verifikuara duke mbështetur rezistencën klimatike.",
+      "feature1": "Paguani për punë",
+      "feature2": "Planifikim fleksibël",
+      "feature3": "Zhvillimi i aftësive",
+      "feature4": "Gjurmimi i të ardhurave",
+      "cta": "Bëhuni Punëtor"
+    },
+    "ngo": {
+      "title": "OJQ / Organizatë",
+      "description": "Postoni punë, menaxhoni projekte dhe lidhuni me punëtorë të motivuar në rajonin tuaj.",
+      "feature1": "Postoni punë të pakufizuara",
+      "feature2": "Menaxhimi i punëtorëve",
+      "feature3": "Raportimi i ndikimit",
+      "feature4": "Mbështetje prioritare",
+      "cta": "Regjistroni Organizatën"
+    }
+  },
+  "application": {
+    "title": "Aplikoni për Pozicionin",
+    "subtitle": "Paraqitni aplikimin tuaj për:",
+    "name": "Emri i Plotë",
+    "namePlaceholder": "Gjergj Kastrioti",
+    "email": "Email",
+    "emailPlaceholder": "gjergj@shembull.com",
+    "phone": "Numri i Telefonit",
+    "phonePlaceholder": "+355 69 123 4567",
+    "description": "Pse jeni të interesuar për këtë pozicion?",
+    "descriptionPlaceholder": "Na tregoni për interesin tuaj dhe përvojën përkatëse...",
+    "cancel": "Anulo",
+    "submit": "Paraqitni Aplikimin",
+    "submitting": "Duke paraqitur...",
+    "success": "Aplikimi u Paraqit!",
+    "successMessage": "u mor. Do t'ju kontaktojmë së shpejti.",
+    "error": "Gabim",
+    "errorMessage": "Dështoi paraqitja e aplikimit. Ju lutemi provoni përsëri."
   }
 }

@@ -2,44 +2,47 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { UserCircle, Briefcase, Building2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
-const roles = [
+const getRoles = (t: any) => [
   {
     icon: <UserCircle className="h-12 w-12" />,
-    title: "Volunteer",
-    description: "Contribute your time to environmental causes. Perfect for students and community members.",
-    features: ["Browse all jobs", "Track your impact", "Earn certificates", "Join community events"],
-    cta: "Start Volunteering",
+    title: t('userRoles.volunteer.title'),
+    description: t('userRoles.volunteer.description'),
+    features: [t('userRoles.volunteer.feature1'), t('userRoles.volunteer.feature2'), t('userRoles.volunteer.feature3'), t('userRoles.volunteer.feature4')],
+    cta: t('userRoles.volunteer.cta'),
     roleValue: "volunteer"
   },
   {
     icon: <Briefcase className="h-12 w-12" />,
-    title: "Worker",
-    description: "Earn income through verified micro-jobs while supporting climate resilience.",
-    features: ["Get paid for work", "Flexible scheduling", "Skill development", "Income tracking"],
-    cta: "Become a Worker",
+    title: t('userRoles.worker.title'),
+    description: t('userRoles.worker.description'),
+    features: [t('userRoles.worker.feature1'), t('userRoles.worker.feature2'), t('userRoles.worker.feature3'), t('userRoles.worker.feature4')],
+    cta: t('userRoles.worker.cta'),
     roleValue: "worker"
   },
   {
     icon: <Building2 className="h-12 w-12" />,
-    title: "NGO / Organization",
-    description: "Post jobs, manage projects, and connect with motivated workers in your region.",
-    features: ["Post unlimited jobs", "Worker management", "Impact reporting", "Priority support"],
-    cta: "Register Organization",
+    title: t('userRoles.ngo.title'),
+    description: t('userRoles.ngo.description'),
+    features: [t('userRoles.ngo.feature1'), t('userRoles.ngo.feature2'), t('userRoles.ngo.feature3'), t('userRoles.ngo.feature4')],
+    cta: t('userRoles.ngo.cta'),
     roleValue: "ngo"
   }
 ];
 
 export const UserRoles = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const roles = getRoles(t);
 
   return (
     <section className="py-16 bg-background" id="about">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-foreground mb-4">Join as...</h2>
+          <h2 className="text-4xl font-bold text-foreground mb-4">{t('userRoles.title')}</h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Whether you want to volunteer, earn income, or create opportunities—there's a place for you.
+            {t('userRoles.subtitle')}
           </p>
         </div>
 

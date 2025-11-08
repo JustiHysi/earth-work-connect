@@ -6,6 +6,7 @@ import { MapPin, Clock, DollarSign, Search, TreePine, Sun, Droplets, Wrench, Lea
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { JobApplicationModal } from "./JobApplicationModal";
+import { useTranslation } from "react-i18next";
 
 interface Job {
   id: string;
@@ -33,10 +34,11 @@ const categoryIcons: Record<string, React.ReactNode> = {
 };
 
 export const JobListings = () => {
+  const { t } = useTranslation();
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedCategory, setSelectedCategory] = useState(t('jobs.allCategories'));
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -45,7 +47,7 @@ export const JobListings = () => {
     setIsModalOpen(true);
   };
 
-  const categories = ["All", "Reforestation", "Clean Energy", "Resilience", "Food Security", "Coastal Protection", "Water Conservation", "Green Transport", "Waste Reduction", "Biodiversity", "Water Quality"];
+  const categories = [t('jobs.allCategories'), "Reforestation", "Clean Energy", "Resilience", "Food Security", "Coastal Protection", "Water Conservation", "Green Transport", "Waste Reduction", "Biodiversity", "Water Quality"];
 
   useEffect(() => {
     fetchJobs();
@@ -70,7 +72,7 @@ export const JobListings = () => {
   const filteredJobs = jobs.filter(job => {
     const matchesSearch = job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          job.location_name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === "All" || 
+    const matchesCategory = selectedCategory === t('jobs.allCategories') || 
                            job.category.replace('_', ' ').toLowerCase() === selectedCategory.toLowerCase().replace(' ', '_');
     return matchesSearch && matchesCategory;
   });
@@ -87,7 +89,7 @@ export const JobListings = () => {
         <div className="container mx-auto px-4">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-            <p className="text-muted-foreground">Loading jobs...</p>
+            <p className="text-muted-foreground">{t('jobs.loading')}</p>
           </div>
         </div>
       </section>
@@ -98,9 +100,9 @@ export const JobListings = () => {
     <section className="py-16 bg-background" id="jobs">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-foreground mb-4">Available Micro-Jobs</h2>
+          <h2 className="text-4xl font-bold text-foreground mb-4">{t('jobs.availableTitle')}</h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Find verified environmental opportunities near you. Every job makes a measurable impact.
+            {t('jobs.availableSubtitle')}
           </p>
         </div>
 
@@ -109,7 +111,7 @@ export const JobListings = () => {
           <div className="relative max-w-md mx-auto">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input
-              placeholder="Search jobs or locations..."
+              placeholder={t('jobs.searchPlaceholder')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10"
@@ -140,7 +142,7 @@ export const JobListings = () => {
                     {categoryIcons[job.category] || <TreePine className="h-5 w-5" />}
                   </div>
                   <Badge className={urgencyColors[job.urgency]}>
-                    {job.urgency} priority
+                    {t(`jobs.${job.urgency}`)} {t('jobs.priority')}
                   </Badge>
                 </div>
                 <CardTitle className="text-xl text-foreground">{job.title}</CardTitle>
@@ -154,16 +156,16 @@ export const JobListings = () => {
                 <div className="flex items-center gap-4 text-sm">
                   <div className="flex items-center gap-1 text-success">
                     <DollarSign className="h-4 w-4" />
-                    <span className="font-semibold">${job.pay_per_day}/day</span>
+                    <span className="font-semibold">${job.pay_per_day}{t('jobs.perDay')}</span>
                   </div>
                   <div className="flex items-center gap-1 text-muted-foreground">
                     <Clock className="h-4 w-4" />
-                    <span>{job.duration_days} days</span>
+                    <span>{job.duration_days} {t('jobs.days')}</span>
                   </div>
                 </div>
                 <div className="pt-2 border-t border-border">
                   <div className="text-sm font-medium text-primary">
-                    Impact: {job.impact_description}
+                    {t('jobs.impact')}: {job.impact_description}
                   </div>
                 </div>
               </CardContent>
@@ -173,7 +175,7 @@ export const JobListings = () => {
                   variant="default"
                   onClick={() => handleApplyClick(job)}
                 >
-                  Apply Now
+                  {t('jobs.apply')}
                 </Button>
               </CardFooter>
             </Card>
@@ -183,7 +185,7 @@ export const JobListings = () => {
         {filteredJobs.length === 0 && (
           <div className="text-center py-12">
             <p className="text-xl text-muted-foreground">
-              No jobs found matching your search. Try adjusting your filters.
+              {t('jobs.noJobs')}
             </p>
           </div>
         )}
