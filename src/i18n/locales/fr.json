@@ -36,15 +36,11 @@
   },
   "impact": {
     "title": "Notre Impact Mondial",
-    "subtitle": "Ensemble, nous faisons la différence",
+    "description": "Des vraies personnes, un vrai changement. Découvrez comment notre communauté fait la différence dans le monde entier.",
     "treesPlanted": "Arbres Plantés",
-    "co2Offset": "Compensation CO₂ (kg)",
+    "co2Offset": "CO₂ Compensé (tonnes)",
     "activeWorkers": "Travailleurs Actifs",
-    "jobsCompleted": "Emplois Terminés",
-    "growing": "Cultiver notre avenir",
-    "carbon": "Carbone réduit",
-    "worldwide": "Faire la différence dans le monde",
-    "completed": "Tâches terminées"
+    "jobsCompleted": "Emplois Terminés"
   },
   "dashboard": {
     "title": "Tableau de Bord",

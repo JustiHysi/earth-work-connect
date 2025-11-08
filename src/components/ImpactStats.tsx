@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { TreePine, Droplets, Users, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface StatProps {
   icon: React.ReactNode;
@@ -46,13 +47,15 @@ const AnimatedStat = ({ icon, value, label, suffix }: StatProps) => {
 };
 
 export const ImpactStats = () => {
+  const { t } = useTranslation();
+  
   return (
     <section className="py-16 bg-muted/50" id="impact">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-foreground mb-4">Our Global Impact</h2>
+          <h2 className="text-4xl font-bold text-foreground mb-4">{t("impact.title")}</h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Real people, real change. See how our community is making a difference worldwide.
+            {t("impact.description")}
           </p>
         </div>
 
@@ -60,25 +63,25 @@ export const ImpactStats = () => {
           <AnimatedStat
             icon={<TreePine className="h-8 w-8" />}
             value={15420}
-            label="Trees Planted"
+            label={t("impact.treesPlanted")}
             suffix=""
           />
           <AnimatedStat
             icon={<Droplets className="h-8 w-8" />}
             value={850}
-            label="CO₂ Offset (tons)"
+            label={t("impact.co2Offset")}
             suffix=""
           />
           <AnimatedStat
             icon={<Users className="h-8 w-8" />}
             value={3200}
-            label="Active Workers"
+            label={t("impact.activeWorkers")}
             suffix="+"
           />
           <AnimatedStat
             icon={<Zap className="h-8 w-8" />}
             value={12500}
-            label="Jobs Completed"
+            label={t("impact.jobsCompleted")}
             suffix="+"
           />
         </div>

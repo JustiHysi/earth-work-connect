@@ -36,15 +36,11 @@
   },
   "impact": {
     "title": "Ndikimi Ynë Global",
-    "subtitle": "Së bashku, po bëjmë ndryshimin",
+    "description": "Njerëz të vërtetë, ndryshim i vërtetë. Shihni se si komuniteti ynë po bën ndryshim në mbarë botën.",
     "treesPlanted": "Pemë të Mbjella",
-    "co2Offset": "Kompensimi i CO₂ (kg)",
+    "co2Offset": "CO₂ e Kompensuar (ton)",
     "activeWorkers": "Punëtorë Aktivë",
-    "jobsCompleted": "Punë të Përfunduara",
-    "growing": "Duke rritur të ardhmen tonë",
-    "carbon": "Karboni i reduktuar",
-    "worldwide": "Duke bërë ndryshimin në mbarë botën",
-    "completed": "Detyra të përfunduara"
+    "jobsCompleted": "Punë të Përfunduara"
   },
   "dashboard": {
     "title": "Paneli",

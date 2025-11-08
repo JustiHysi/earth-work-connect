@@ -36,15 +36,11 @@
   },
   "impact": {
     "title": "Our Global Impact",
-    "subtitle": "Together, we're making a difference",
+    "description": "Real people, real change. See how our community is making a difference worldwide.",
     "treesPlanted": "Trees Planted",
-    "co2Offset": "CO₂ Offset (kg)",
+    "co2Offset": "CO₂ Offset (tons)",
     "activeWorkers": "Active Workers",
-    "jobsCompleted": "Jobs Completed",
-    "growing": "Growing our future",
-    "carbon": "Carbon reduced",
-    "worldwide": "Making a difference worldwide",
-    "completed": "Tasks finished"
+    "jobsCompleted": "Jobs Completed"
   },
   "dashboard": {
     "title": "Dashboard",
