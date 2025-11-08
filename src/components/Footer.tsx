@@ -6,6 +6,11 @@ export const Footer = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
+  const handleNavigation = (path: string) => {
+    navigate(path);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <footer className="border-t border-border bg-background mt-20">
       <div className="container mx-auto px-4 py-12">
@@ -25,7 +30,7 @@ export const Footer = () => {
             <ul className="space-y-2 text-muted-foreground">
               <li>
                 <button 
-                  onClick={() => navigate("/jobs")} 
+                  onClick={() => handleNavigation("/jobs")} 
                   className="hover:text-primary transition-colors cursor-pointer text-left"
                 >
                   {t('nav.browseJobs')}
@@ -33,7 +38,7 @@ export const Footer = () => {
               </li>
               <li>
                 <button 
-                  onClick={() => navigate("/impact")} 
+                  onClick={() => handleNavigation("/impact")} 
                   className="hover:text-primary transition-colors cursor-pointer text-left"
                 >
                   {t('nav.ourImpact')}
@@ -41,7 +46,7 @@ export const Footer = () => {
               </li>
               <li>
                 <button 
-                  onClick={() => navigate("/about")} 
+                  onClick={() => handleNavigation("/about")} 
                   className="hover:text-primary transition-colors cursor-pointer text-left"
                 >
                   {t('footer.about')}
@@ -49,7 +54,7 @@ export const Footer = () => {
               </li>
               <li>
                 <button 
-                  onClick={() => navigate("/contact")} 
+                  onClick={() => handleNavigation("/contact")} 
                   className="hover:text-primary transition-colors cursor-pointer text-left"
                 >
                   {t('footer.contact')}
@@ -61,8 +66,8 @@ export const Footer = () => {
           <div>
             <h4 className="font-semibold mb-4">Legal</h4>
             <ul className="space-y-2 text-muted-foreground">
-              <li><button onClick={() => navigate("/privacy")} className="hover:text-primary transition-colors">{t('footer.privacy')}</button></li>
-              <li><button onClick={() => navigate("/terms")} className="hover:text-primary transition-colors">{t('footer.terms')}</button></li>
+              <li><button onClick={() => handleNavigation("/privacy")} className="hover:text-primary transition-colors">{t('footer.privacy')}</button></li>
+              <li><button onClick={() => handleNavigation("/terms")} className="hover:text-primary transition-colors">{t('footer.terms')}</button></li>
             </ul>
           </div>
         </div>
