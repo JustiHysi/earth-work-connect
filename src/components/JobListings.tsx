@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { MapPin, Clock, DollarSign, Search, TreePine, Sun, Droplets, Wrench, Leaf, Wind } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { JobApplicationModal } from "./JobApplicationModal";
 
 interface Job {
   id: string;
@@ -36,6 +37,13 @@ export const JobListings = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleApplyClick = (job: Job) => {
+    setSelectedJob(job);
+    setIsModalOpen(true);
+  };
 
   const categories = ["All", "Reforestation", "Clean Energy", "Resilience", "Food Security", "Coastal Protection", "Water Conservation", "Green Transport", "Waste Reduction", "Biodiversity", "Water Quality"];
 
@@ -160,7 +168,11 @@ export const JobListings = () => {
                 </div>
               </CardContent>
               <CardFooter>
-                <Button className="w-full" variant="default">
+                <Button 
+                  className="w-full" 
+                  variant="default"
+                  onClick={() => handleApplyClick(job)}
+                >
                   Apply Now
                 </Button>
               </CardFooter>
@@ -175,6 +187,12 @@ export const JobListings = () => {
             </p>
           </div>
         )}
+
+        <JobApplicationModal
+          open={isModalOpen}
+          onOpenChange={setIsModalOpen}
+          jobTitle={selectedJob?.title || ""}
+        />
       </div>
     </section>
   );
