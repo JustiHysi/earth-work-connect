@@ -7,6 +7,7 @@ import { TreePine, Droplets, Briefcase, DollarSign, LogOut, RefreshCw, User, Use
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { RoleChangeDialog } from "@/components/RoleChangeDialog";
+import { ProfileAvatar } from "@/components/ProfileAvatar";
 
 interface Profile {
   id: string;
@@ -92,9 +93,7 @@ export default function Dashboard() {
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <h1 className="text-2xl font-bold cursor-pointer hover:text-primary transition-colors" onClick={() => navigate("/")}>Work4Earth</h1>
           <div className="flex items-center gap-4">
-            <span className="text-sm text-muted-foreground hidden sm:inline">
-              {profile?.full_name || profile?.email}
-            </span>
+            <ProfileAvatar />
             <Button variant="outline" size="sm" onClick={() => navigate("/profile")}>
               <UserCircle className="h-4 w-4 mr-2" />
               Profile

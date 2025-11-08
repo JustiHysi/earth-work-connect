@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useLocation } from "react-router-dom";
 
 interface Message {
   role: "user" | "assistant";
@@ -12,6 +13,7 @@ interface Message {
 }
 
 export const ChatbotWidget = () => {
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -23,6 +25,12 @@ export const ChatbotWidget = () => {
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+
+  // Hide chatbot on auth, dashboard, and profile pages
+  const hiddenRoutes = ['/auth', '/dashboard', '/profile'];
+  if (hiddenRoutes.includes(location.pathname)) {
+    return null;
+  }
 
   useEffect(() => {
     if (scrollRef.current) {

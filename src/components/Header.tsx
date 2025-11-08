@@ -6,6 +6,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { User as SupabaseUser } from "@supabase/supabase-js";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { ProfileAvatar } from "./ProfileAvatar";
 import { useTranslation } from "react-i18next";
 
 export const Header = () => {
@@ -106,6 +107,7 @@ export const Header = () => {
                   </>
                 )}
               </Button>
+              <ProfileAvatar />
             </>
           ) : (
             <Button variant="default" size="sm" onClick={() => navigate("/auth")}>
@@ -150,6 +152,9 @@ export const Header = () => {
                       </>
                     )}
                   </Button>
+                  <div className="flex justify-center pt-2">
+                    <ProfileAvatar />
+                  </div>
                 </>
               ) : (
                 <Button variant="default" className="w-full" onClick={() => navigate("/auth")}>
