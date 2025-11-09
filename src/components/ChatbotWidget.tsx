@@ -15,6 +15,7 @@ interface Message {
 export const ChatbotWidget = () => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
+  const [sessionId] = useState(() => crypto.randomUUID());
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
@@ -48,8 +49,15 @@ export const ChatbotWidget = () => {
     setIsLoading(true);
 
     try {
+      const { data: { user } } = await supabase.auth.getUser();
+      
       const { data, error } = await supabase.functions.invoke("chatbot", {
-        body: { message: userMessage, conversationHistory: messages },
+        body: { 
+          message: userMessage, 
+          conversationHistory: messages,
+          sessionId,
+          userId: user?.id || null
+        },
       });
 
       if (error) throw error;
@@ -58,6 +66,13 @@ export const ChatbotWidget = () => {
         ...prev,
         { role: "assistant", content: data.response },
       ]);
+      
+      // Ask for feedback on helpful responses
+      if (messages.length > 4) {
+        setTimeout(() => {
+          askForFeedback(userMessage, data.response);
+        }, 2000);
+      }
     } catch (error: any) {
       console.error("Chatbot error:", error);
       toast({
@@ -74,6 +89,42 @@ export const ChatbotWidget = () => {
       ]);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const askForFeedback = async (userMsg: string, botResponse: string) => {
+    // Simple feedback mechanism - store successful patterns
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    // Extract key phrases for pattern learning
+    const queryPattern = userMsg.toLowerCase().substring(0, 100);
+    
+    // Check if pattern exists
+    const { data: existing } = await supabase
+      .from('chatbot_learning')
+      .select('*')
+      .ilike('query_pattern', `%${queryPattern.substring(0, 50)}%`)
+      .maybeSingle();
+
+    if (existing) {
+      // Update success count
+      await supabase
+        .from('chatbot_learning')
+        .update({ 
+          success_count: existing.success_count + 1,
+          last_used: new Date().toISOString()
+        })
+        .eq('id', existing.id);
+    } else {
+      // Create new learning pattern
+      await supabase
+        .from('chatbot_learning')
+        .insert({
+          query_pattern: queryPattern,
+          successful_response: botResponse.substring(0, 200),
+          success_count: 1,
+          average_rating: 0
+        });
     }
   };
 

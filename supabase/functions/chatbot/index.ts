@@ -11,7 +11,7 @@ serve(async (req) => {
   }
 
   try {
-    const { message, conversationHistory } = await req.json();
+    const { message, conversationHistory, sessionId, userId } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
 
     if (!LOVABLE_API_KEY) {
@@ -30,6 +30,28 @@ serve(async (req) => {
     });
 
     const jobs = await jobsResponse.json();
+
+    // Fetch learned patterns for self-learning
+    const learningResponse = await fetch(`${supabaseUrl}/rest/v1/chatbot_learning?select=*&order=success_count.desc&limit=50`, {
+      headers: {
+        apikey: supabaseKey,
+        Authorization: `Bearer ${supabaseKey}`,
+      },
+    });
+
+    const learnedPatterns = await learningResponse.json();
+
+    // Build learned knowledge section
+    const learnedKnowledge = learnedPatterns.length > 0 ? `
+## Learned User Patterns 🧠
+Based on successful past conversations, prioritize these responses:
+${learnedPatterns.map((pattern: any) => `
+- Query Pattern: "${pattern.query_pattern}"
+  Successful Response: "${pattern.successful_response}"
+  Success Rate: ${pattern.success_count} uses, ${pattern.average_rating}/5 rating
+`).join('\n')}
+` : '';
+
 
     // Build comprehensive knowledge base
     const knowledgeBase = `
@@ -152,6 +174,9 @@ Remember: Every small action counts. Whether you plant one tree or participate i
 - If a job listing is missing information, acknowledge it
 - Be honest about volunteer vs. paid positions
 - Don't promise specific outcomes (like guaranteed job acceptance)
+- Learn from successful patterns in the learned knowledge section
+
+${learnedKnowledge}
 
 ${knowledgeBase}
 
@@ -207,6 +232,26 @@ Previous conversation: ${JSON.stringify(conversationHistory.slice(-5))}`;
 
     const data = await response.json();
     const aiResponse = data.choices[0].message.content;
+
+    // Store conversation for learning (fire and forget)
+    if (sessionId) {
+      fetch(`${supabaseUrl}/rest/v1/chatbot_conversations`, {
+        method: 'POST',
+        headers: {
+          apikey: supabaseKey,
+          Authorization: `Bearer ${supabaseKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: userId || null,
+          session_id: sessionId,
+          message: message,
+          response: aiResponse,
+          context: { conversationLength: conversationHistory.length }
+        }),
+      }).catch(err => console.error('Failed to store conversation:', err));
+    }
+
 
     return new Response(
       JSON.stringify({ response: aiResponse }),

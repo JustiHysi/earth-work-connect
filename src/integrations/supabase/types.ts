@@ -14,6 +14,72 @@ export type Database = {
   }
   public: {
     Tables: {
+      chatbot_conversations: {
+        Row: {
+          context: Json | null
+          created_at: string | null
+          feedback: number | null
+          helpful: boolean | null
+          id: string
+          message: string
+          response: string
+          session_id: string
+          user_id: string | null
+        }
+        Insert: {
+          context?: Json | null
+          created_at?: string | null
+          feedback?: number | null
+          helpful?: boolean | null
+          id?: string
+          message: string
+          response: string
+          session_id?: string
+          user_id?: string | null
+        }
+        Update: {
+          context?: Json | null
+          created_at?: string | null
+          feedback?: number | null
+          helpful?: boolean | null
+          id?: string
+          message?: string
+          response?: string
+          session_id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      chatbot_learning: {
+        Row: {
+          average_rating: number | null
+          created_at: string | null
+          id: string
+          last_used: string | null
+          query_pattern: string
+          success_count: number | null
+          successful_response: string
+        }
+        Insert: {
+          average_rating?: number | null
+          created_at?: string | null
+          id?: string
+          last_used?: string | null
+          query_pattern: string
+          success_count?: number | null
+          successful_response: string
+        }
+        Update: {
+          average_rating?: number | null
+          created_at?: string | null
+          id?: string
+          last_used?: string | null
+          query_pattern?: string
+          success_count?: number | null
+          successful_response?: string
+        }
+        Relationships: []
+      }
       impact_stats: {
         Row: {
           co2_offset_kg: number
