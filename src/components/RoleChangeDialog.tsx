@@ -70,7 +70,8 @@ export function RoleChangeDialog({
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
 
-      const { error } = await supabase
+      // Update the profiles table
+      const { error: profileError } = await supabase
         .from('profiles')
         .update({ 
           role: selectedRole as 'volunteer' | 'worker' | 'ngo',
@@ -78,7 +79,23 @@ export function RoleChangeDialog({
         })
         .eq('id', user.id);
 
-      if (error) throw error;
+      if (profileError) throw profileError;
+
+      // Delete old roles from user_roles table
+      await supabase
+        .from('user_roles')
+        .delete()
+        .eq('user_id', user.id);
+
+      // Insert new role into user_roles table
+      const { error: roleError } = await supabase
+        .from('user_roles')
+        .insert({
+          user_id: user.id,
+          role: selectedRole
+        });
+
+      if (roleError) throw roleError;
 
       toast.success("Role changed successfully! You can change it again in 7 days.");
       onRoleChanged();
