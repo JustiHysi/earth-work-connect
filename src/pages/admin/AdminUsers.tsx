@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, CheckCircle, XCircle, Shield } from "lucide-react";
+import { ArrowLeft, CheckCircle, XCircle, Shield, Home } from "lucide-react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 
@@ -157,9 +157,13 @@ export default function AdminUsers() {
     <div className="min-h-screen bg-background">
       <header className="border-b border-border bg-background/95 backdrop-blur">
         <div className="container mx-auto px-4 h-16 flex items-center gap-4">
+          <Button variant="ghost" size="sm" onClick={() => navigate("/")}>
+            <Home className="h-4 w-4 mr-2" />
+            Home
+          </Button>
           <Button variant="ghost" size="sm" onClick={() => navigate("/admin")}>
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back
+            Admin
           </Button>
           <h1 className="text-2xl font-bold">User Management</h1>
         </div>

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Save, X } from "lucide-react";
+import { ArrowLeft, Save, X, Home } from "lucide-react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 
@@ -114,11 +114,20 @@ export default function Profile() {
           <Button
             variant="ghost"
             size="sm"
+            onClick={() => navigate("/")}
+            className="mr-4"
+          >
+            <Home className="h-4 w-4 mr-2" />
+            Home
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
             onClick={() => navigate("/dashboard")}
             className="mr-4"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Dashboard
+            Dashboard
           </Button>
           <h1 className="text-2xl font-bold">Edit Profile</h1>
         </div>

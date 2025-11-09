@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { TreePine, Droplets, Briefcase, DollarSign, LogOut, RefreshCw, User, UserCircle } from "lucide-react";
+import { TreePine, Droplets, Briefcase, DollarSign, LogOut, RefreshCw, User, UserCircle, Home } from "lucide-react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { RoleChangeDialog } from "@/components/RoleChangeDialog";
@@ -91,7 +91,13 @@ export default function Dashboard() {
     <div className="min-h-screen bg-background">
       <header className="border-b border-border bg-background/95 backdrop-blur">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <h1 className="text-2xl font-bold cursor-pointer hover:text-primary transition-colors" onClick={() => navigate("/")}>Work4Earth</h1>
+          <div className="flex items-center gap-4">
+            <Button variant="ghost" size="sm" onClick={() => navigate("/")}>
+              <Home className="h-4 w-4 mr-2" />
+              Home
+            </Button>
+            <h1 className="text-2xl font-bold cursor-pointer hover:text-primary transition-colors" onClick={() => navigate("/")}>Work4Earth</h1>
+          </div>
           <div className="flex items-center gap-4">
             <ProfileAvatar />
             <Button variant="outline" size="sm" onClick={() => navigate("/profile")}>
