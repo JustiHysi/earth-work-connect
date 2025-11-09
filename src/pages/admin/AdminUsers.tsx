@@ -109,14 +109,22 @@ export default function AdminUsers() {
     try {
       if (currentlyHasNgo) {
         // Revoke NGO access
-        const { error } = await supabase
+        const { error: deleteError } = await supabase
           .from('user_roles')
           .delete()
           .eq('user_id', userId)
           .eq('role', 'ngo');
 
-        if (error) throw error;
-        toast.success("NGO access revoked");
+        if (deleteError) throw deleteError;
+
+        // Assign worker role
+        const { error: insertError } = await supabase
+          .from('user_roles')
+          .insert({ user_id: userId, role: 'worker' });
+
+        if (insertError && insertError.code !== '23505') throw insertError; // Ignore duplicate key error
+
+        toast.success("NGO access revoked, assigned worker role");
       } else {
         // Grant NGO access
         const { error } = await supabase
