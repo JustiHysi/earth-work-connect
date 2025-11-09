@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, CheckCircle, XCircle } from "lucide-react";
+import { ArrowLeft, CheckCircle, XCircle, Shield } from "lucide-react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 
@@ -16,11 +16,18 @@ interface UserProfile {
   created_at: string;
 }
 
+interface UserRole {
+  user_id: string;
+  role: string;
+}
+
 export default function AdminUsers() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState<UserProfile[]>([]);
+  const [userRoles, setUserRoles] = useState<Map<string, string[]>>(new Map());
+  const [updatingRole, setUpdatingRole] = useState<string | null>(null);
 
   useEffect(() => {
     checkAdminAccess();
@@ -68,9 +75,65 @@ export default function AdminUsers() {
       
       if (error) throw error;
       setUsers(data || []);
+
+      // Fetch all user roles
+      const { data: rolesData, error: rolesError } = await supabase
+        .from('user_roles')
+        .select('user_id, role');
+
+      if (rolesError) throw rolesError;
+
+      // Map user roles
+      const rolesMap = new Map<string, string[]>();
+      rolesData?.forEach((roleEntry: UserRole) => {
+        const existing = rolesMap.get(roleEntry.user_id) || [];
+        rolesMap.set(roleEntry.user_id, [...existing, roleEntry.role]);
+      });
+      setUserRoles(rolesMap);
     } catch (error) {
       console.error('Error fetching users:', error);
       toast.error("Failed to load users");
+    }
+  };
+
+  const hasNgoRole = (userId: string) => {
+    return userRoles.get(userId)?.includes('ngo') || false;
+  };
+
+  const hasAdminRole = (userId: string) => {
+    return userRoles.get(userId)?.includes('admin') || false;
+  };
+
+  const toggleNgoAccess = async (userId: string, currentlyHasNgo: boolean) => {
+    setUpdatingRole(userId);
+    try {
+      if (currentlyHasNgo) {
+        // Revoke NGO access
+        const { error } = await supabase
+          .from('user_roles')
+          .delete()
+          .eq('user_id', userId)
+          .eq('role', 'ngo');
+
+        if (error) throw error;
+        toast.success("NGO access revoked");
+      } else {
+        // Grant NGO access
+        const { error } = await supabase
+          .from('user_roles')
+          .insert({ user_id: userId, role: 'ngo' });
+
+        if (error) throw error;
+        toast.success("NGO access granted");
+      }
+
+      // Refresh user roles
+      await fetchUsers();
+    } catch (error: any) {
+      console.error('Error updating role:', error);
+      toast.error(error.message || "Failed to update role");
+    } finally {
+      setUpdatingRole(null);
     }
   };
 
@@ -101,27 +164,69 @@ export default function AdminUsers() {
         </div>
 
         <div className="grid gap-4">
-          {users.map((user) => (
-            <Card key={user.id}>
-              <CardHeader>
-                <div className="flex items-start justify-between">
-                  <div>
-                    <CardTitle className="text-lg">{user.full_name || 'No name'}</CardTitle>
-                    <p className="text-sm text-muted-foreground">{user.email}</p>
+          {users.map((user) => {
+            const isNgo = hasNgoRole(user.id);
+            const isAdmin = hasAdminRole(user.id);
+            const isUpdating = updatingRole === user.id;
+
+            return (
+              <Card key={user.id}>
+                <CardHeader>
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <CardTitle className="text-lg">{user.full_name || 'No name'}</CardTitle>
+                      <p className="text-sm text-muted-foreground">{user.email}</p>
+                    </div>
+                    <div className="flex gap-2">
+                      <Badge variant={user.role === 'ngo' ? 'default' : 'secondary'}>
+                        {user.role}
+                      </Badge>
+                      {isAdmin && (
+                        <Badge variant="destructive">
+                          <Shield className="h-3 w-3 mr-1" />
+                          Admin
+                        </Badge>
+                      )}
+                      {isNgo && (
+                        <Badge variant="default">
+                          <CheckCircle className="h-3 w-3 mr-1" />
+                          NGO
+                        </Badge>
+                      )}
+                    </div>
                   </div>
-                  <Badge variant={user.role === 'ngo' ? 'default' : 'secondary'}>
-                    {user.role}
-                  </Badge>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                  <span>Joined: {new Date(user.created_at).toLocaleDateString()}</span>
-                  <span>ID: {user.id.substring(0, 8)}...</span>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                      <span>Joined: {new Date(user.created_at).toLocaleDateString()}</span>
+                      <span>ID: {user.id.substring(0, 8)}...</span>
+                    </div>
+                    <Button
+                      variant={isNgo ? "destructive" : "default"}
+                      size="sm"
+                      onClick={() => toggleNgoAccess(user.id, isNgo)}
+                      disabled={isUpdating}
+                    >
+                      {isUpdating ? (
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current"></div>
+                      ) : isNgo ? (
+                        <>
+                          <XCircle className="h-4 w-4 mr-2" />
+                          Revoke NGO
+                        </>
+                      ) : (
+                        <>
+                          <CheckCircle className="h-4 w-4 mr-2" />
+                          Grant NGO
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
 
         {users.length === 0 && (
