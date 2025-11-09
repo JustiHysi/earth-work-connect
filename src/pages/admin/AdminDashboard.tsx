@@ -65,23 +65,22 @@ export default function AdminDashboard() {
 
   const fetchStats = async () => {
     try {
-      const [usersRes, jobsRes, appsRes, impactRes] = await Promise.all([
-        supabase.from('profiles').select('id', { count: 'exact', head: true }),
-        supabase.from('jobs').select('id', { count: 'exact', head: true }),
-        supabase.from('job_applications').select('id', { count: 'exact', head: true }).eq('status', 'pending'),
-        supabase.from('impact_stats').select('trees_planted'),
-      ]);
-
-      const totalTrees = impactRes.data?.reduce((sum, stat) => sum + stat.trees_planted, 0) || 0;
-
-      setStats({
-        totalUsers: usersRes.count || 0,
-        totalJobs: jobsRes.count || 0,
-        pendingApplications: appsRes.count || 0,
-        totalImpact: totalTrees,
-      });
+      const { data, error } = await supabase.rpc('get_admin_stats');
+      
+      if (error) throw error;
+      
+      if (data && typeof data === 'object' && !Array.isArray(data)) {
+        const statsData = data as any;
+        setStats({
+          totalUsers: Number(statsData.totalUsers) || 0,
+          totalJobs: Number(statsData.totalJobs) || 0,
+          pendingApplications: Number(statsData.pendingApplications) || 0,
+          totalImpact: Number(statsData.totalImpact) || 0,
+        });
+      }
     } catch (error) {
       console.error('Error fetching stats:', error);
+      toast.error("Failed to load statistics");
     }
   };
 

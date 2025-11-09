@@ -271,6 +271,7 @@ export type Database = {
       }
     }
     Functions: {
+      get_admin_stats: { Args: never; Returns: Json }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
