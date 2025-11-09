@@ -189,8 +189,14 @@ export default function Dashboard() {
               <Button variant="outline" onClick={() => navigate("/map")}>
                 {t("dashboard.viewMap")}
               </Button>
-              {profile?.role === "ngo" && (
+              {profile?.role === "ngo" ? (
                 <Button variant="secondary" onClick={() => navigate("/post-job")}>
+                  {t("dashboard.postJob")}
+                </Button>
+              ) : (
+                <Button variant="secondary" onClick={() => {
+                  toast.error("Only NGOs can post jobs. Change your role to NGO to post jobs.");
+                }}>
                   {t("dashboard.postJob")}
                 </Button>
               )}
