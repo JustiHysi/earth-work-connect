@@ -34,7 +34,7 @@ export function RoleChangeDialog({
     
     const lastChanged = new Date(roleChangedAt);
     const now = new Date();
-    const daysSinceChange = (now.getTime() - lastChanged.getTime()) / (1000 * 60 * 60 * 24);
+    const daysSinceChange = Math.floor((now.getTime() - lastChanged.getTime()) / (1000 * 60 * 60 * 24));
     
     return daysSinceChange >= 7;
   };
@@ -44,9 +44,9 @@ export function RoleChangeDialog({
     
     const lastChanged = new Date(roleChangedAt);
     const now = new Date();
-    const daysSinceChange = (now.getTime() - lastChanged.getTime()) / (1000 * 60 * 60 * 24);
+    const daysSinceChange = Math.floor((now.getTime() - lastChanged.getTime()) / (1000 * 60 * 60 * 24));
     
-    return Math.max(0, Math.ceil(7 - daysSinceChange));
+    return Math.max(0, 7 - daysSinceChange);
   };
 
   const handleRoleSelect = (role: string) => {
@@ -119,50 +119,60 @@ export function RoleChangeDialog({
         <DialogContent className="sm:max-w-2xl">
           <DialogHeader>
             <DialogTitle className="text-2xl">Change Your Role</DialogTitle>
-            <DialogDescription>
-              {canChangeRole() 
-                ? "Select a new role below. You can change it again in 7 days."
-                : `You can change your role in ${getDaysUntilChange()} days.`
-              }
+            <DialogDescription className="text-base">
+              {canChangeRole() ? (
+                <span className="text-green-600 dark:text-green-400 font-medium">
+                  ✓ You can now change your role. Select a new role below.
+                </span>
+              ) : (
+                <span className="text-amber-600 dark:text-amber-400 font-medium">
+                  ⏳ You can change your role in {getDaysUntilChange()} day{getDaysUntilChange() !== 1 ? 's' : ''}.
+                </span>
+              )}
             </DialogDescription>
           </DialogHeader>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-            {roleOptions.map((option) => (
-              <button
-                key={option.value}
-                onClick={() => handleRoleSelect(option.value)}
-                disabled={!canChangeRole()}
-                className={`
-                  relative p-6 rounded-lg border-2 transition-all text-left
-                  ${selectedRole === option.value ? 'border-primary bg-primary/10' : 'border-border'}
-                  ${canChangeRole() ? 'hover:border-primary hover:shadow-lg cursor-pointer' : 'opacity-50 cursor-not-allowed'}
-                  ${option.value === currentRole ? 'ring-2 ring-primary/30' : ''}
-                `}
-              >
-                <div className="flex flex-col items-center text-center space-y-3">
-                  <div className={`p-3 rounded-full ${
-                    selectedRole === option.value ? 'bg-primary text-primary-foreground' : 'bg-primary/10 text-primary'
-                  }`}>
-                    {option.icon}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+            {roleOptions.map((option) => {
+              const isCurrent = option.value === currentRole;
+              const isDisabled = !canChangeRole();
+              
+              return (
+                <button
+                  key={option.value}
+                  onClick={() => !isDisabled && handleRoleSelect(option.value)}
+                  disabled={isDisabled}
+                  className={`
+                    relative p-6 rounded-lg border-2 transition-all text-left
+                    ${selectedRole === option.value ? 'border-primary bg-primary/10 shadow-lg' : 'border-border'}
+                    ${!isDisabled ? 'hover:border-primary hover:shadow-lg hover:scale-105 cursor-pointer' : 'opacity-40 cursor-not-allowed'}
+                    ${isCurrent ? 'ring-2 ring-primary/30' : ''}
+                  `}
+                >
+                  <div className="flex flex-col items-center text-center space-y-3">
+                    <div className={`p-3 rounded-full transition-all ${
+                      selectedRole === option.value ? 'bg-primary text-primary-foreground scale-110' : 'bg-primary/10 text-primary'
+                    }`}>
+                      {option.icon}
+                    </div>
+                    
+                    <div>
+                      <h3 className="font-bold text-lg mb-1">
+                        {option.label}
+                      </h3>
+                      {isCurrent && (
+                        <span className="inline-block text-xs bg-primary text-primary-foreground px-2 py-1 rounded-full mb-2 font-medium">
+                          Current Role
+                        </span>
+                      )}
+                      <p className="text-sm text-muted-foreground">
+                        {option.description}
+                      </p>
+                    </div>
                   </div>
-                  
-                  <div>
-                    <h3 className="font-bold text-lg mb-1">
-                      {option.label}
-                    </h3>
-                    {option.value === currentRole && (
-                      <span className="inline-block text-xs bg-primary text-primary-foreground px-2 py-1 rounded-full mb-2">
-                        Current Role
-                      </span>
-                    )}
-                    <p className="text-sm text-muted-foreground">
-                      {option.description}
-                    </p>
-                  </div>
-                </div>
-              </button>
-            ))}
+                </button>
+              );
+            })}
           </div>
 
           <div className="flex justify-end mt-6">
