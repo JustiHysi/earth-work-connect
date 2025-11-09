@@ -90,10 +90,10 @@ export function RoleChangeDialog({
       // Insert new role into user_roles table
       const { error: roleError } = await supabase
         .from('user_roles')
-        .insert({
+        .insert([{
           user_id: user.id,
-          role: selectedRole
-        });
+          role: selectedRole as 'admin' | 'moderator' | 'ngo' | 'volunteer' | 'worker'
+        }]);
 
       if (roleError) throw roleError;
 
